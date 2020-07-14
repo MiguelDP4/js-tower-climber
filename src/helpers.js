@@ -4,11 +4,11 @@
 
 export const helpers = (() => {
   const matrixPosX = (posX) => {
-    return 8 + (posX * 16);
+    return 16 + (posX * 32);
   };
 
   const matrixPosY = (posY) => {
-    return 608 - (8 + posY * 16);
+    return 768 - (16 + posY * 32);
   };
 
   return {  matrixPosX, 
