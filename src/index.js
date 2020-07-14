@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import helpers from "./helpers";
+import levels from "./levels";
 
 const config = {
   type: Phaser.AUTO,
@@ -37,18 +37,8 @@ function preload() {
    });
 }
 
-let player;
-let platforms;
-
 function create() {
-  player = this.physics.add.sprite(100,450,'monty');
-  platforms = this.physics.add.staticGroup();
-  for(let i = 0; i <= 50; i+= 1){
-    platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(0), 'top-tile');
-  }
-  this.physics.add.collider(player, platforms);
-  player.setCollideWorldBounds(true);
-  player.setScale(2);
+  levels.load(0, this);
 }
 
 function update() {
