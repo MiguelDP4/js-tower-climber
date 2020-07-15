@@ -32,6 +32,7 @@ let accelerationX;
 let jumpVel;
 let maxDashDistance;
 let dashDistance;
+let shadowKillTimer;
 
 function preload() {
   keys = this.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE');
@@ -40,11 +41,14 @@ function preload() {
   jumpVel = 600;
   maxDashDistance = 15;
   dashDistance = maxDashDistance;
+  shadowKillTimer = 6;
 
   this.load.image('white', '../src/assets/white-square.png');
   this.load.image('top-tile', '../src/assets/grassy-red-sand-tile.png');
   this.load.image('tile', '../src/assets/red-sand-tile.png');
   this.load.image('goal', '../src/assets/goal-flag.png');
+  this.load.image('montyjumpleft', '../src/assets/monty-jump-left.png');
+  this.load.image('montyjumpright', '../src/assets/monty-jump-right.png');
   this.load.spritesheet('monty',
    '../src/assets/Monty.png', {
     frameWidth: 8,
@@ -57,6 +61,12 @@ function create() {
 }
 
 function update() {
+  if(shadowKillTimer > 0){
+    shadowKillTimer -= 1;
+  } else {
+    shadowKillTimer = 6;
+    gameStatus.playerDashShadow.killAndHide(gameStatus.playerDashShadow.getFirstAlive());
+  }
   if(gameStatus.finishLevel){
     levels.coverScene();
   }else {
@@ -76,6 +86,9 @@ function update() {
   if(keys.A.isDown) {
     gameStatus.player.facing = 'left';
     if(keys.SHIFT.isDown && dashDistance > 0){
+      if(dashDistance % 3 === 0) {
+        gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpleft').setScale(3);
+      }
       gameStatus.player.setVelocityX(-maxVelX * 2.5);
       gameStatus.player.setVelocityY(0);
       gameStatus.isDashing = true;
@@ -97,6 +110,10 @@ function update() {
   } else if (keys.D.isDown) {
     gameStatus.player.facing = 'right';
     if(keys.SHIFT.isDown && dashDistance > 0){
+      if(dashDistance % 3 === 0) {
+        gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(3);
+      }
+
       gameStatus.player.setVelocityX(maxVelX * 2.5);
       gameStatus.player.setVelocityY(0);
       gameStatus.isDashing = true;

@@ -81,6 +81,7 @@ export const levels = (() => {
     gameStatus.player = scene.physics.add.sprite(0, 0, 'monty');
     gameStatus.player.setCollideWorldBounds(true);
     gameStatus.player.setScale(3);
+    gameStatus.playerDashShadow = scene.add.group();
     gameStatus.platforms = scene.physics.add.staticGroup();
     gameStatus.goal = scene.physics.add.sprite(0, 0, 'goal').setScale(2);
     gameStatus.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
