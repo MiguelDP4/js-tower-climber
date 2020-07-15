@@ -61,9 +61,12 @@ export const levels = (() => {
     gameStatus.player.setScale(3);
     gameStatus.platforms = scene.physics.add.staticGroup();
     gameStatus.goals = scene.physics.add.staticGroup();
+    gameStatus.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
+    gameStatus.curtain.setScale(64,48);
+    gameStatus.curtain.setDepth(100);
     scene.physics.add.collider(gameStatus.player, gameStatus.platforms);
     scene.physics.add.collider(gameStatus.player, gameStatus.goals);
-    loadAnimations(scene);
+    loadAnimations(scene);    
   };
 
   const load = (levelNumber, scene) => {
@@ -81,6 +84,20 @@ export const levels = (() => {
     }
   };
 
+  const uncoverScene = () => {
+    if(gameStatus.curtain.alpha > 0)
+      gameStatus.curtain.alpha -= (0.01 + 0.01 * gameStatus.curtain.alpha);
+    if(gameStatus.curtain.alpha < 0)
+      gameStatus.curtain.alpha = 0;
+  };
+
+  const coverScene = () => {
+    if(gameStatus.curtain.alpha < 1)
+      gameStatus.curtain.alpha += gameStatus.curtain.alpha * 0.01 + 0.01;
+    if(gameStatus.curtain.alpha > 1)
+      gameStatus.curtain.alpha = 1;
+  };
+
   const plain = () => {
     for(let i = 0; i < 32; i+= 1){
       gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(0), 'top-tile').setScale(2).refreshBody();
@@ -88,6 +105,7 @@ export const levels = (() => {
     gameStatus.player.x = 100;
     gameStatus.player.y = 500;
     gameStatus.goals.create(helpers.matrixPosX(30), helpers.matrixPosY(1), 'goal').setScale(2).refreshBody();
+    
   };
 
   const level1 = (scene) => {
@@ -98,8 +116,7 @@ export const levels = (() => {
     gameStatus.player.y = 500;
   };
 
-  return {  load
-          };
+  return { load, uncoverScene, coverScene };
 })();
 
 export default levels;

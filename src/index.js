@@ -34,6 +34,7 @@ function preload() {
   keys = this.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE');
   velX = 200;
   jumpVel = 600;
+  this.load.image('white', '../src/assets/white-square.png');
   this.load.image('top-tile', '../src/assets/grassy-red-sand-tile.png');
   this.load.image('tile', '../src/assets/grassy-red-sand-tile.png');
   this.load.image('goal', '../src/assets/goal-flag.png');
@@ -49,6 +50,11 @@ function create() {
 }
 
 function update() {
+  if(gameStatus.finishLevel)
+    levels.coverScene();
+    else
+    levels.uncoverScene();
+
   if(keys.A.isDown) {
     gameStatus.player.facing = 'left';
     if(keys.SHIFT.isDown){
