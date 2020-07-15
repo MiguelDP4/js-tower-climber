@@ -6,6 +6,22 @@ export const levelHelper = (() => {
     gameStatus.platforms.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), key).setScale(2).refreshBody();
   };
 
+  const placeSpineTileFacingUp = (posX, posY) => {
+    gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesup').setScale(2).refreshBody();
+  }
+
+  const placeSpineTileFacingDown = (posX, posY) => {
+    gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesdown').setScale(2).refreshBody();
+  }
+
+  const placeSpineTileFacingLeft = (posX, posY) => {
+    gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesleft').setScale(2).refreshBody();
+  }
+
+  const placeSpineTileFacingRight = (posX, posY) => {
+    gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesright').setScale(2).refreshBody();
+  }
+
   const placeGoal = (posX, posY) => {
     gameStatus.goal.x = helpers.matrixPosX(posX);
     gameStatus.goal.y = helpers.matrixPosY(posY);
@@ -29,11 +45,47 @@ export const levelHelper = (() => {
     }
   };
 
+  const drawSpineHorizontalLineFacingUp = (start, finish, posY) => {
+    let starting = Math.min(start,finish);
+    let finishing = Math.max(start,finish);
+    for(let i = starting; i <= finishing; i += 1){
+      placeSpineTileFacingUp(i, posY);
+    }
+  };
+
+  const drawSpineHorizontalLineFacingDown = (start, finish, posY) => {
+    let starting = Math.min(start,finish);
+    let finishing = Math.max(start,finish);
+    for(let i = starting; i <= finishing; i += 1){
+      placeSpineTileFacingDown(i, posY);
+    }
+  };
+
+  const drawSpineVerticalLineFacingLeft = (start, finish, posX) => {
+    let starting = Math.min(start,finish);
+    let finishing = Math.max(start,finish);
+    for(let i = starting; i <= finishing; i += 1){
+      placeSpineTileFacingLeft(posX, i);
+    }
+  };
+
+  const drawSpineVerticalLineFacingRight = (start, finish, posX) => {
+    let starting = Math.min(start,finish);
+    let finishing = Math.max(start,finish);
+    for(let i = starting; i <= finishing; i += 1){
+      placeSpineTileFacingRight(posX, i);
+    }
+  };
+
   return {
     placePlatformTile,
     placeGoal,
     placePlayer,
-    drawPlatformSquare
+    drawPlatformSquare,
+    drawSpineHorizontalLineFacingUp,
+    drawSpineHorizontalLineFacingDown,
+    drawSpineVerticalLineFacingLeft,
+    drawSpineVerticalLineFacingRight
   };
 })();
 

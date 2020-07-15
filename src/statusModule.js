@@ -8,6 +8,7 @@ export const gameStatus = (() => {
   let playerDashShadow;
   let facing = 'right';
   let curtain;
+  let spines;
   let finishLevel = false;
   
   return {  level, 
@@ -19,6 +20,7 @@ export const gameStatus = (() => {
             facing, 
             goal, 
             curtain, 
+            spines,
             finishLevel 
           };
 })();

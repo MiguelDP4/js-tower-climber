@@ -1,5 +1,5 @@
 {
-  "name": "Tower-Climber",
+  "name": "tower-climber",
   "version": "1.0.0",
   "description": "A Phaser 3 Platform Game",
   "main": "src/index.js",
