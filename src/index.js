@@ -30,6 +30,7 @@ let keys;
 let maxVelX;
 let accelerationX;
 let jumpVel;
+let maxDashDistance;
 let dashDistance;
 
 function preload() {
@@ -37,7 +38,8 @@ function preload() {
   maxVelX = 200;
   accelerationX = 20;
   jumpVel = 600;
-  dashDistance = 600;
+  maxDashDistance = 15;
+  dashDistance = maxDashDistance;
 
   this.load.image('white', '../src/assets/white-square.png');
   this.load.image('top-tile', '../src/assets/grassy-red-sand-tile.png');
@@ -55,37 +57,57 @@ function create() {
 }
 
 function update() {
-  if(gameStatus.finishLevel)
+  if(gameStatus.finishLevel){
     levels.coverScene();
-    else
+  }else {
     levels.uncoverScene();
+  }
+  
+  if(gameStatus.isDashing) {
+    gameStatus.player.setScale(4, 2.7);
+  } else {
+    gameStatus.player.setScale(3)
+  }
+
+  if(keys.SHIFT.isUp && gameStatus.player.body.touching.down) {
+    dashDistance = maxDashDistance;
+  }
 
   if(keys.A.isDown) {
     gameStatus.player.facing = 'left';
-    if(keys.SHIFT.isDown){
-      gameStatus.player.setVelocityX(-300);
-      // Todo: add dash function, which will temporarily give a speed boost
-      // and ignore gravity.
+    if(keys.SHIFT.isDown && dashDistance > 0){
+      gameStatus.player.setVelocityX(-maxVelX * 2.5);
+      gameStatus.player.setVelocityY(0);
+      gameStatus.isDashing = true;
+      dashDistance -= 1;
+      if(gameStatus.player.facing === 'left') {
+        gameStatus.player.anims.play('jumpleft', true);
+      } else if(gameStatus.player.facing === 'right') {
+        gameStatus.player.anims.play('jumpright', true);
+      }
     } else {
+      gameStatus.isDashing = false;
       if(gameStatus.player.body.velocity.x < Math.abs(maxVelX)){
         gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x - accelerationX);
-        if(gameStatus.player.body.velocity.x < -1 * maxVelX)
-          gameStatus.player.setVelocityX(-1 * maxVelX);
       }
+      if(gameStatus.player.body.velocity.x < -1 * maxVelX)
+        gameStatus.player.setVelocityX(-1 * maxVelX);
     }    
     gameStatus.player.anims.play('left', true);
   } else if (keys.D.isDown) {
     gameStatus.player.facing = 'right';
-    if(keys.SHIFT.isDown){
-      gameStatus.player.setVelocityX(300);
-      // Todo: add dash function, which will temporarily give a speed boost
-      // and ignore gravity.
+    if(keys.SHIFT.isDown && dashDistance > 0){
+      gameStatus.player.setVelocityX(maxVelX * 2.5);
+      gameStatus.player.setVelocityY(0);
+      gameStatus.isDashing = true;
+      dashDistance -= 1;
     } else {
-      if(gameStatus.player.body.velocity.x < Math.abs(maxVelX)){
+      gameStatus.isDashing = false;
+      if(gameStatus.player.body.velocity.x < maxVelX){
         gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x + accelerationX);
-        if(gameStatus.player.body.velocity.x > maxVelX)
-          gameStatus.player.setVelocityX(maxVelX);
       }
+      if(gameStatus.player.body.velocity.x > maxVelX)
+        gameStatus.player.setVelocityX(maxVelX);
     }  
     gameStatus.player.anims.play('right', true);
   } else {
