@@ -27,13 +27,15 @@ const config = {
 
 const game = new Phaser.Game(config);
 let keys;
-let velX;
+let maxVelX;
+let accelerationX;
 let jumpVel;
 let dashDistance;
 
 function preload() {
   keys = this.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE');
-  velX = 200;
+  maxVelX = 200;
+  accelerationX = 20;
   jumpVel = 600;
   dashDistance = 600;
 
@@ -65,7 +67,11 @@ function update() {
       // Todo: add dash function, which will temporarily give a speed boost
       // and ignore gravity.
     } else {
-      gameStatus.player.setVelocityX(-1 * velX);
+      if(gameStatus.player.body.velocity.x < Math.abs(maxVelX)){
+        gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x - accelerationX);
+        if(gameStatus.player.body.velocity.x < -1 * maxVelX)
+          gameStatus.player.setVelocityX(-1 * maxVelX);
+      }
     }    
     gameStatus.player.anims.play('left', true);
   } else if (keys.D.isDown) {
@@ -75,16 +81,30 @@ function update() {
       // Todo: add dash function, which will temporarily give a speed boost
       // and ignore gravity.
     } else {
-      gameStatus.player.setVelocityX(velX);
+      if(gameStatus.player.body.velocity.x < Math.abs(maxVelX)){
+        gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x + accelerationX);
+        if(gameStatus.player.body.velocity.x > maxVelX)
+          gameStatus.player.setVelocityX(maxVelX);
+      }
     }  
     gameStatus.player.anims.play('right', true);
   } else {
+    if(gameStatus.player.body.velocity.x < 0){
+      gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x + accelerationX);
+      if(gameStatus.player.body.velocity.x > 0){
+        gameStatus.player.setVelocityX(0);
+      }
+    } else if(gameStatus.player.body.velocity.x > 0) {
+      gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x - accelerationX);
+      if(gameStatus.player.body.velocity.x < 0){
+        gameStatus.player.setVelocityX(0);
+      }
+    }
     if(gameStatus.player.facing === 'left') {
       gameStatus.player.anims.play('idleleft', true);
     } else if(gameStatus.player.facing === 'right') {
       gameStatus.player.anims.play('idleright', true);
     }
-    gameStatus.player.setVelocityX(0);
   }
 
   if(keys.SPACE.isDown && gameStatus.player.body.touching.down){
