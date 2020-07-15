@@ -50,10 +50,10 @@ function preload() {
   this.load.image('montyjumpleft', '../src/assets/monty-jump-left.png');
   this.load.image('montyjumpright', '../src/assets/monty-jump-right.png');
   this.load.spritesheet('monty',
-   '../src/assets/Monty.png', {
-    frameWidth: 8,
-    frameHeight: 16
-   });
+    '../src/assets/Monty.png', {
+      frameWidth: 8,
+      frameHeight: 16
+    });
 }
 
 function create() {
@@ -61,56 +61,56 @@ function create() {
 }
 
 function update() {
-  if(shadowKillTimer > 0){
+  if (shadowKillTimer > 0) {
     shadowKillTimer -= 1;
   } else {
     shadowKillTimer = 6;
     gameStatus.playerDashShadow.killAndHide(gameStatus.playerDashShadow.getFirstAlive());
   }
-  if(gameStatus.finishLevel){
+  if (gameStatus.finishLevel) {
     levels.coverScene();
-  }else {
+  } else {
     levels.uncoverScene();
   }
-  
-  if(gameStatus.isDashing) {
+
+  if (gameStatus.isDashing) {
     gameStatus.player.setScale(4, 2.7);
   } else {
     gameStatus.player.setScale(3)
   }
 
-  if(keys.SHIFT.isUp && gameStatus.player.body.touching.down) {
+  if (keys.SHIFT.isUp && gameStatus.player.body.touching.down) {
     dashDistance = maxDashDistance;
   }
 
-  if(keys.A.isDown) {
-    gameStatus.player.facing = 'left';
-    if(keys.SHIFT.isDown && dashDistance > 0){
-      if(dashDistance % 3 === 0) {
+  if (keys.A.isDown) {
+    gameStatus.facing = 'left';
+    if (keys.SHIFT.isDown && dashDistance > 0) {
+      if (dashDistance % 3 === 0) {
         gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpleft').setScale(3);
       }
       gameStatus.player.setVelocityX(-maxVelX * 2.5);
       gameStatus.player.setVelocityY(0);
       gameStatus.isDashing = true;
       dashDistance -= 1;
-      if(gameStatus.player.facing === 'left') {
+      if (gameStatus.facing === 'left') {
         gameStatus.player.anims.play('jumpleft', true);
-      } else if(gameStatus.player.facing === 'right') {
+      } else if (gameStatus.facing === 'right') {
         gameStatus.player.anims.play('jumpright', true);
       }
     } else {
       gameStatus.isDashing = false;
-      if(gameStatus.player.body.velocity.x < Math.abs(maxVelX)){
+      if (gameStatus.player.body.velocity.x < Math.abs(maxVelX)) {
         gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x - accelerationX);
       }
-      if(gameStatus.player.body.velocity.x < -1 * maxVelX)
+      if (gameStatus.player.body.velocity.x < -1 * maxVelX)
         gameStatus.player.setVelocityX(-1 * maxVelX);
-    }    
+    }
     gameStatus.player.anims.play('left', true);
   } else if (keys.D.isDown) {
-    gameStatus.player.facing = 'right';
-    if(keys.SHIFT.isDown && dashDistance > 0){
-      if(dashDistance % 3 === 0) {
+    gameStatus.facing = 'right';
+    if (keys.SHIFT.isDown && dashDistance > 0) {
+      if (dashDistance % 3 === 0) {
         gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(3);
       }
 
@@ -120,44 +120,69 @@ function update() {
       dashDistance -= 1;
     } else {
       gameStatus.isDashing = false;
-      if(gameStatus.player.body.velocity.x < maxVelX){
+      if (gameStatus.player.body.velocity.x < maxVelX) {
         gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x + accelerationX);
       }
-      if(gameStatus.player.body.velocity.x > maxVelX)
+      if (gameStatus.player.body.velocity.x > maxVelX)
         gameStatus.player.setVelocityX(maxVelX);
-    }  
+    }
     gameStatus.player.anims.play('right', true);
   } else {
-    if(gameStatus.player.body.velocity.x < 0){
-      gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x + accelerationX);
-      if(gameStatus.player.body.velocity.x > 0){
-        gameStatus.player.setVelocityX(0);
+    if (keys.SHIFT.isDown && dashDistance > 0) {
+      if (gameStatus.facing == 'right') {
+        console.log("DASHING RIGHT");
+        if (dashDistance % 3 === 0) {
+          gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(3);
+        }
+
+        gameStatus.player.setVelocityX(maxVelX * 2.5);
+        gameStatus.player.setVelocityY(0);
+        gameStatus.isDashing = true;
+        dashDistance -= 1;
+      } else {
+        console.log("DASHING LEFT");
+        if (dashDistance % 3 === 0) {
+          gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpleft').setScale(3);
+        }
+
+        gameStatus.player.setVelocityX(maxVelX * 2.5 * -1);
+        gameStatus.player.setVelocityY(0);
+        gameStatus.isDashing = true;
+        dashDistance -= 1;
       }
-    } else if(gameStatus.player.body.velocity.x > 0) {
-      gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x - accelerationX);
-      if(gameStatus.player.body.velocity.x < 0){
-        gameStatus.player.setVelocityX(0);
+    } else {
+      gameStatus.isDashing = false;
+      if (gameStatus.player.body.velocity.x < 0) {
+        gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x + accelerationX);
+        if (gameStatus.player.body.velocity.x > 0) {
+          gameStatus.player.setVelocityX(0);
+        }
+      } else if (gameStatus.player.body.velocity.x > 0) {
+        gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x - accelerationX);
+        if (gameStatus.player.body.velocity.x < 0) {
+          gameStatus.player.setVelocityX(0);
+        }
       }
     }
-    if(gameStatus.player.facing === 'left') {
+    if (gameStatus.facing === 'left') {
       gameStatus.player.anims.play('idleleft', true);
-    } else if(gameStatus.player.facing === 'right') {
+    } else if (gameStatus.facing === 'right') {
       gameStatus.player.anims.play('idleright', true);
     }
   }
 
-  if(keys.SPACE.isDown && gameStatus.player.body.touching.down){
+  if (keys.SPACE.isDown && gameStatus.player.body.touching.down) {
     gameStatus.player.setVelocityY(-1 * jumpVel);
   }
 
-  if(keys.SPACE.isUp && !gameStatus.player.body.touching.down && gameStatus.player.body.velocity.y < (-1 * jumpVel/2)){
-    gameStatus.player.setVelocityY(-1 * jumpVel/2);
+  if (keys.SPACE.isUp && !gameStatus.player.body.touching.down && gameStatus.player.body.velocity.y < (-1 * jumpVel / 2)) {
+    gameStatus.player.setVelocityY(-1 * jumpVel / 2);
   }
 
-  if(!gameStatus.player.body.touching.down){
-    if(gameStatus.player.facing === 'left')
+  if (!gameStatus.player.body.touching.down) {
+    if (gameStatus.facing === 'left')
       gameStatus.player.anims.play('jumpleft', true);
-    else if(gameStatus.player.facing === 'right')
+    else if (gameStatus.facing === 'right')
       gameStatus.player.anims.play('jumpright', true);
   }
 }
