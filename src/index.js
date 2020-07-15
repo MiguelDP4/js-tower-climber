@@ -36,11 +36,11 @@ function preload() {
   jumpVel = 600;
   this.load.image('white', '../src/assets/white-square.png');
   this.load.image('top-tile', '../src/assets/grassy-red-sand-tile.png');
-  this.load.image('tile', '../src/assets/grassy-red-sand-tile.png');
+  this.load.image('tile', '../src/assets/red-sand-tile.png');
   this.load.image('goal', '../src/assets/goal-flag.png');
   this.load.spritesheet('monty',
    '../src/assets/Monty.png', {
-    frameWidth: 16,
+    frameWidth: 8,
     frameHeight: 16
    });
 }
