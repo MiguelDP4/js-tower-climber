@@ -132,58 +132,28 @@ export const levels = (() => {
   };
 
   const plain = () => {
-    for (let i = 0; i < 32; i += 1) {
-      levelHelper.placePlatformTile('top-tile', i, 0)
-    }
+    levelHelper.drawPlatformSquare(0, 0, 32, 0, 'top-tile');
     levelHelper.placePlayer(3, 5);
-    levelHelper.placeGoal(30, 2)
-
+    levelHelper.placeGoal(30, 2);
   };
 
   const level1 = (scene) => {
-    for (let i = 0; i < 27; i += 1) {
-      gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(0), 'top-tile').setScale(2).refreshBody();
-    }
+    levelHelper.drawPlatformSquare(0, 0, 32, 0, 'top-tile');
     levelHelper.drawPlatformSquare(27, 2, 32, 0, 'tile');
     levelHelper.drawPlatformSquare(27, 3, 32, 3, 'top-tile');
-    gameStatus.goal.x = helpers.matrixPosX(30);
-    gameStatus.goal.y = helpers.matrixPosY(4);
-    gameStatus.player.x = 100;
-    gameStatus.player.y = 500;
+    levelHelper.placePlayer(3, 5);
+    levelHelper.placeGoal(30, 4);
   };
 
   const level2 = (scene) => {
-    for (let i = 0; i < 27; i += 1) {
-      gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(0), 'top-tile').setScale(2).refreshBody();
-    }
-    for (let i = 27; i < 32; i += 1) {
-      gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(0), 'tile').setScale(2).refreshBody();
-    }
-    for (let i = 27; i < 32; i += 1) {
-      gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(1), 'tile').setScale(2).refreshBody();
-    }
-    for (let i = 27; i < 32; i += 1) {
-      gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(2), 'tile').setScale(2).refreshBody();
-    }
-    for (let i = 27; i < 32; i += 1) {
-      gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(3), 'tile').setScale(2).refreshBody();
-    }
-    for (let i = 27; i < 32; i += 1) {
-      gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(4), 'tile').setScale(2).refreshBody();
-    }
-    for (let i = 27; i < 32; i += 1) {
-      gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(5), 'tile').setScale(2).refreshBody();
-    }
-    for (let i = 20; i < 25; i += 1) {
-      gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(3), 'top-tile').setScale(2).refreshBody();
-    }
-    for (let i = 27; i < 32; i += 1) {
-      gameStatus.platforms.create(helpers.matrixPosX(i), helpers.matrixPosY(6), 'top-tile').setScale(2).refreshBody();
-    }
-    gameStatus.goal.x = helpers.matrixPosX(30);
-    gameStatus.goal.y = helpers.matrixPosY(7);
-    gameStatus.player.x = 100;
-    gameStatus.player.y = 500;
+    levelHelper.drawPlatformSquare(0, 0, 27, 0, 'top-tile');
+    levelHelper.drawPlatformSquare(27,0,31,9, 'tile');
+    levelHelper.drawPlatformSquare(27, 10, 31, 10, 'top-tile');
+    levelHelper.drawPlatformSquare(20, 4, 23, 4, 'top-tile');
+    levelHelper.drawPlatformSquare(15, 8, 17, 8, 'top-tile');
+    levelHelper.drawPlatformSquare(20, 12, 23, 12, 'top-tile');
+    levelHelper.placePlayer(3, 5);
+    levelHelper.placeGoal(30, 11);
   };
 
   return {
