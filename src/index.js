@@ -29,11 +29,14 @@ const game = new Phaser.Game(config);
 let keys;
 let velX;
 let jumpVel;
+let dashDistance;
 
 function preload() {
   keys = this.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE');
   velX = 200;
   jumpVel = 600;
+  dashDistance = 600;
+
   this.load.image('white', '../src/assets/white-square.png');
   this.load.image('top-tile', '../src/assets/grassy-red-sand-tile.png');
   this.load.image('tile', '../src/assets/red-sand-tile.png');
@@ -86,6 +89,10 @@ function update() {
 
   if(keys.SPACE.isDown && gameStatus.player.body.touching.down){
     gameStatus.player.setVelocityY(-1 * jumpVel);
+  }
+
+  if(keys.SPACE.isUp && !gameStatus.player.body.touching.down && gameStatus.player.body.velocity.y < (-1 * jumpVel/2)){
+    gameStatus.player.setVelocityY(-1 * jumpVel/2);
   }
 
   if(!gameStatus.player.body.touching.down){
