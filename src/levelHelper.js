@@ -39,6 +39,7 @@ export const levelHelper = (() => {
     newEnemy.setCollideWorldBounds(true, 1, 1);
     newEnemy.setVelocityX(Phaser.Math.Between(-300,300));
     newEnemy.setVelocityY(Phaser.Math.Between(-300,300));
+    return newEnemy;
   };
 
   const drawPlatformSquare = (cornerX1, cornerY1, cornerX2, cornerY2, key) => {

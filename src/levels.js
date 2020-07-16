@@ -219,21 +219,18 @@ export const levels = (() => {
   };
 
   const level1 = (scene) => {
-    // for(let i = 0; i <= gameStatus.cycles; i+=1) {
-    //   levelHelper.createEnemy(2 * i + 1, 20, 'gots');
-    // }
     let enemyAmount = 0;
     if(gameStatus.cycles <= 20) {
       enemyAmount = gameStatus.cycles;
     } else {
       enemyAmount = 21;
-      gameStatus.enemies.children.iterate(function(enemy) {
-        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 10);
-        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 10);
-      });
     }
     for(let i = 0; i <= enemyAmount; i+=1) {
-      levelHelper.createEnemy(2 * i + 1, 20, 'gots');
+      enemy = levelHelper.createEnemy(2 * i + 1, 20, 'gots');
+      if(enemyAmount === 21) {
+        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 10);
+        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 10);
+      }
     }
     levelHelper.drawPlatformSquare(0, 0, 32, 0, 'top-tile');
     levelHelper.drawPlatformSquare(27, 2, 32, 0, 'tile');
