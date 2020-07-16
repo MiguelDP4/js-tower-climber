@@ -57,12 +57,12 @@ export const levels = (() => {
     });
   };
 
-  const finishLevel = (player, goal) => {
-    goal.disableBody(true, true);
-    if (gameStatus.level < 8) {
+  const clearGameObjects = () => {
+    gameStatus.goal.disableBody(true, true);
+    if (gameStatus.level < 4) {
       gameStatus.level += 1;
     } else {
-      gameStatus.level = 0;
+      gameStatus.level = 1;
     }
 
     gameStatus.facing = 'right';
@@ -80,7 +80,10 @@ export const levels = (() => {
       gameStatus.playerDashShadow.killAndHide(gameStatus.playerDashShadow.getFirstAlive());
     }
     gameStatus.finishLevel = false;
-    console.log(gameStatus.platforms);
+  };
+
+  const winLevel = () => {
+    clearGameObjects();
     load(gameStatus.level);
   };
 
@@ -98,7 +101,7 @@ export const levels = (() => {
     scene.physics.add.collider(gameStatus.player, gameStatus.spines);
     scene.physics.add.collider(gameStatus.player, gameStatus.platforms);
     scene.physics.add.collider(gameStatus.goal, gameStatus.platforms);
-    scene.physics.add.overlap(gameStatus.player, gameStatus.goal, finishLevel, null, scene);
+    scene.physics.add.overlap(gameStatus.player, gameStatus.goal, winLevel, null, scene);
     loadAnimations(scene);
   };
 
