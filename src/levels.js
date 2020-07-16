@@ -74,14 +74,14 @@ export const levels = (() => {
   };
 
   const setupGameObjects = (scene) => {
-    gameStatus.livesText = scene.add.text(24, 24, `Lives: ${gameStatus.lives}`, {
-      fontSize: '32px',
-      fill: '#000'
-    });
     if (gameStatus.level === -1) {
       console.log("showing title screen");
       gameStatus.titleScreen = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'title');
     } else {
+      gameStatus.livesText = scene.add.text(24, 24, `Lives: ${gameStatus.lives}`, {
+        fontSize: '32px',
+        fill: '#000'
+      });
       gameStatus.player = scene.physics.add.sprite(0, 0, 'monty');
       gameStatus.player.setCollideWorldBounds(true);
       gameStatus.player.setScale(3);
@@ -130,7 +130,7 @@ export const levels = (() => {
   };
 
   const winLevel = () => {
-    if (gameStatus.level < 4) {
+    if (gameStatus.level < 5) {
       gameStatus.level += 1;
     } else {
       gameStatus.level = 1;
@@ -144,9 +144,7 @@ export const levels = (() => {
     if (gameStatus.lives > 0) {
       gameStatus.lives -= 1;
     } else {
-      // Todo:
-      // Show game over screen and ask if player wants to continue
-      gameStatus.level = 0;
+      gameStatus.level = -2;
       gameStatus.lives = 4;
       gameStatus.cycles = 0;
     }
@@ -368,7 +366,8 @@ export const levels = (() => {
         level5();
         break;
       default:
-
+        gameStatus.level = -1;
+        startScreen();
     }
   };
 
