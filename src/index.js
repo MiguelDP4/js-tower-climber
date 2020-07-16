@@ -43,7 +43,13 @@ function preload() {
   dashDistance = maxDashDistance;
   shadowKillTimer = 6;
 
+  this.load.image('gots-right', '../src/assets/gots-right.png');
+  this.load.image('gots', '../src/assets/gots.png');
   this.load.image('white', '../src/assets/white-square.png');
+  this.load.image('spinesup', '../src/assets/spinesup.png');
+  this.load.image('spinesdown', '../src/assets/spinesdown.png');
+  this.load.image('spinesleft', '../src/assets/spinesleft.png');
+  this.load.image('spinesright', '../src/assets/spinesright.png');
   this.load.image('top-tile', '../src/assets/grassy-red-sand-tile.png');
   this.load.image('tile', '../src/assets/red-sand-tile.png');
   this.load.image('goal', '../src/assets/goal-flag.png');
@@ -57,7 +63,7 @@ function preload() {
 }
 
 function create() {
-  levels.load(0, this);
+  levels.load(1, this);
 }
 
 function update() {
@@ -87,7 +93,7 @@ function update() {
     gameStatus.facing = 'left';
     if (keys.SHIFT.isDown && dashDistance > 0) {
       if (dashDistance % 3 === 0) {
-        gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpleft').setScale(3);
+        gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpleft').setScale(4, 2.7);
       }
       gameStatus.player.setVelocityX(-maxVelX * 2.5);
       gameStatus.player.setVelocityY(0);
@@ -111,7 +117,7 @@ function update() {
     gameStatus.facing = 'right';
     if (keys.SHIFT.isDown && dashDistance > 0) {
       if (dashDistance % 3 === 0) {
-        gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(3);
+        gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(4, 2.7);
       }
 
       gameStatus.player.setVelocityX(maxVelX * 2.5);
@@ -132,7 +138,7 @@ function update() {
       if (gameStatus.facing == 'right') {
         console.log("DASHING RIGHT");
         if (dashDistance % 3 === 0) {
-          gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(3);
+          gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(4, 2.7);
         }
 
         gameStatus.player.setVelocityX(maxVelX * 2.5);
@@ -142,7 +148,7 @@ function update() {
       } else {
         console.log("DASHING LEFT");
         if (dashDistance % 3 === 0) {
-          gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpleft').setScale(3);
+          gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpleft').setScale(4, 2.7);
         }
 
         gameStatus.player.setVelocityX(maxVelX * 2.5 * -1);
@@ -185,4 +191,11 @@ function update() {
     else if (gameStatus.facing === 'right')
       gameStatus.player.anims.play('jumpright', true);
   }
+  gameStatus.enemies.children.iterate(function(enemy) {
+    if(enemy.body.velocity.x >= 0) {
+      enemy.anims.play('gots-right');
+    } else {
+      enemy.anims.play('gots-left');
+    }
+  });
 }
