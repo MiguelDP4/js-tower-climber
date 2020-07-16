@@ -1,9 +1,10 @@
 export const gameStatus = (() => {
+  let titleScreen;
   let player;
   let platforms;
   let enemies;
   let goal;
-  let level = 1;
+  let level = -1;
   let lives = 4;
   let cycles = 0;
   let livesText;
@@ -15,7 +16,8 @@ export const gameStatus = (() => {
   let spines;
   let finishLevel = false;
   
-  return {  level, 
+  return {  titleScreen,
+            level, 
             lives,
             livesText,
             cycles,

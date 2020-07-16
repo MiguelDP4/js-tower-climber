@@ -78,85 +78,55 @@ export const levels = (() => {
       fontSize: '32px',
       fill: '#000'
     });
-    gameStatus.player = scene.physics.add.sprite(0, 0, 'monty');
-    gameStatus.player.setCollideWorldBounds(true);
-    gameStatus.player.setScale(3);
-    gameStatus.playerDashShadow = scene.add.group();
-    gameStatus.platforms = scene.physics.add.staticGroup();
-    gameStatus.spines = scene.physics.add.staticGroup();
-    gameStatus.goal = scene.physics.add.sprite(0, 0, 'goal').setScale(2);
-    gameStatus.enemies = scene.physics.add.group({ allowGravity: false });
-    gameStatus.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
-    gameStatus.curtain.setScale(64, 48);
-    gameStatus.curtain.setDepth(100);
-    scene.physics.add.collider(gameStatus.goal, gameStatus.spines);
-    scene.physics.add.collider(gameStatus.enemies, gameStatus.platforms);
-    scene.physics.add.overlap(gameStatus.player, gameStatus.enemies, playerDie, null, scene);
-    scene.physics.add.collider(gameStatus.player, gameStatus.platforms);
-    scene.physics.add.collider(gameStatus.goal, gameStatus.platforms);
-    scene.physics.add.overlap(gameStatus.player, gameStatus.goal, winLevel, null, scene);
-    scene.physics.add.overlap(gameStatus.player, gameStatus.spines, playerDie, null, scene);
-    loadAnimations(scene);
+    if (gameStatus.level === -1) {
+      console.log("showing title screen");
+      gameStatus.titleScreen = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'title');
+    } else {
+      gameStatus.player = scene.physics.add.sprite(0, 0, 'monty');
+      gameStatus.player.setCollideWorldBounds(true);
+      gameStatus.player.setScale(3);
+      gameStatus.playerDashShadow = scene.add.group();
+      gameStatus.platforms = scene.physics.add.staticGroup();
+      gameStatus.spines = scene.physics.add.staticGroup();
+      gameStatus.goal = scene.physics.add.sprite(0, 0, 'goal').setScale(2);
+      gameStatus.enemies = scene.physics.add.group({
+        allowGravity: false
+      });
+      gameStatus.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
+      gameStatus.curtain.setScale(64, 48);
+      gameStatus.curtain.setDepth(100);
+      scene.physics.add.collider(gameStatus.goal, gameStatus.spines);
+      scene.physics.add.collider(gameStatus.enemies, gameStatus.platforms);
+      scene.physics.add.overlap(gameStatus.player, gameStatus.enemies, playerDie, null, scene);
+      scene.physics.add.collider(gameStatus.player, gameStatus.platforms);
+      scene.physics.add.collider(gameStatus.goal, gameStatus.platforms);
+      scene.physics.add.overlap(gameStatus.player, gameStatus.goal, winLevel, null, scene);
+      scene.physics.add.overlap(gameStatus.player, gameStatus.spines, playerDie, null, scene);
+      loadAnimations(scene);
+    }
   };
 
   const clearGameObjects = () => {
-    gameStatus.goal.disableBody(true, true);
-    gameStatus.livesText.destroy();
-    gameStatus.facing = 'right';
-    gameStatus.isDashing = false;
-    gameStatus.goal.disableBody(true, true);
-    gameStatus.player.disableBody(true, true);
-    gameStatus.enemies.children.iterate(function(enemy) {
-      enemy.disableBody(true, true);
-    })
-    gameStatus.platforms.children.iterate(function (platform) {
-      platform.disableBody(true, true);
-    });
-    gameStatus.spines.children.iterate(function (spine) {
-      spine.disableBody(true, true);
-    });
-    gameStatus.curtain.destroy()
-    while (gameStatus.playerDashShadow.getFirstAlive() != null) {
-      gameStatus.playerDashShadow.killAndHide(gameStatus.playerDashShadow.getFirstAlive());
-    }
-    gameStatus.finishLevel = false;
-  };
-
-  const load = (levelNumber, scene = levelScene) => {
-    levelScene = scene;
-    setupGameObjects(scene);
-    gameStatus.level = levelNumber;
-    switch (levelNumber) {
-      case 0:
-        plain();
-        break;
-      case 1:
-        level1();
-        break;
-      case 2:
-        level2();
-        break;
-      case 3:
-        level3();
-        break;
-      case 4:
-        level4();
-        break;
-      case 5:
-        level5();
-        break;
-      case 6:
-        level6();
-        break;
-      case 7:
-        level7();
-        break;
-      case 8:
-        level8();
-        break;
-      default:
-
-    }
+      gameStatus.goal.disableBody(true, true);
+      gameStatus.livesText.destroy();
+      gameStatus.facing = 'right';
+      gameStatus.isDashing = false;
+      gameStatus.goal.disableBody(true, true);
+      gameStatus.player.disableBody(true, true);
+      gameStatus.enemies.children.iterate(function (enemy) {
+        enemy.disableBody(true, true);
+      })
+      gameStatus.platforms.children.iterate(function (platform) {
+        platform.disableBody(true, true);
+      });
+      gameStatus.spines.children.iterate(function (spine) {
+        spine.disableBody(true, true);
+      });
+      gameStatus.curtain.destroy()
+      while (gameStatus.playerDashShadow.getFirstAlive() != null) {
+        gameStatus.playerDashShadow.killAndHide(gameStatus.playerDashShadow.getFirstAlive());
+      }
+      gameStatus.finishLevel = false;
   };
 
   const winLevel = () => {
@@ -171,12 +141,12 @@ export const levels = (() => {
   };
 
   const playerDie = () => {
-    if(gameStatus.lives > 0){
+    if (gameStatus.lives > 0) {
       gameStatus.lives -= 1;
     } else {
       // Todo:
       // Show game over screen and ask if player wants to continue
-      gameStatus.level = 1;
+      gameStatus.level = 0;
       gameStatus.lives = 4;
       gameStatus.cycles = 0;
     }
@@ -199,16 +169,20 @@ export const levels = (() => {
       gameStatus.curtain.alpha = 1;
   };
 
-  const plain = () => {
+  const startScreen = () => {
+
+  }
+
+  const tutorial = () => {
     let enemyAmount = 0;
-    if(gameStatus.cycles <= 7) {
+    if (gameStatus.cycles <= 7) {
       enemyAmount = gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
-    for(let i = 1; i <= enemyAmount; i+=1) {
+    for (let i = 1; i <= enemyAmount; i += 1) {
       let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
-      if(enemyAmount === 8) {
+      if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
       }
@@ -221,14 +195,14 @@ export const levels = (() => {
 
   const level1 = (scene) => {
     let enemyAmount = 0;
-    if(gameStatus.cycles <= 7) {
+    if (gameStatus.cycles <= 7) {
       enemyAmount = gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
-    for(let i = 1; i <= enemyAmount; i+=1) {
+    for (let i = 1; i <= enemyAmount; i += 1) {
       let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
-      if(enemyAmount === 8) {
+      if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
       }
@@ -242,14 +216,14 @@ export const levels = (() => {
 
   const level2 = (scene) => {
     let enemyAmount = 0;
-    if(gameStatus.cycles <= 7) {
+    if (gameStatus.cycles <= 7) {
       enemyAmount = gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
-    for(let i = 1; i <= enemyAmount; i+=1) {
+    for (let i = 1; i <= enemyAmount; i += 1) {
       let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
-      if(enemyAmount === 8) {
+      if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
       }
@@ -268,14 +242,14 @@ export const levels = (() => {
 
   const level3 = (scene) => {
     let enemyAmount = 0;
-    if(gameStatus.cycles <= 7) {
+    if (gameStatus.cycles <= 7) {
       enemyAmount = gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
-    for(let i = 1; i <= enemyAmount; i+=1) {
+    for (let i = 1; i <= enemyAmount; i += 1) {
       let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
-      if(enemyAmount === 8) {
+      if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
       }
@@ -303,14 +277,14 @@ export const levels = (() => {
 
   const level4 = (scene) => {
     let enemyAmount = 0;
-    if(gameStatus.cycles <= 7) {
+    if (gameStatus.cycles <= 7) {
       enemyAmount = gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
-    for(let i = 1; i <= enemyAmount; i+=1) {
+    for (let i = 1; i <= enemyAmount; i += 1) {
       let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
-      if(enemyAmount === 8) {
+      if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
       }
@@ -336,14 +310,14 @@ export const levels = (() => {
 
   const level5 = (scene) => {
     let enemyAmount = 0;
-    if(gameStatus.cycles <= 7) {
+    if (gameStatus.cycles <= 7) {
       enemyAmount = gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
-    for(let i = 1; i <= enemyAmount; i+=1) {
+    for (let i = 1; i <= enemyAmount; i += 1) {
       let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
-      if(enemyAmount === 8) {
+      if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
       }
@@ -365,6 +339,37 @@ export const levels = (() => {
     levelHelper.drawPlatformSquare(15, 16, 31, 16, 'tile');
     levelHelper.placePlayer(1, 2);
     levelHelper.placeGoal(20, 3);
+  };
+
+  const load = (levelNumber, scene = levelScene) => {
+    levelScene = scene;
+    setupGameObjects(scene);
+    gameStatus.level = levelNumber;
+    switch (levelNumber) {
+      case -1:
+        startScreen();
+        break;
+      case 0:
+        tutorial();
+        break;
+      case 1:
+        level1();
+        break;
+      case 2:
+        level2();
+        break;
+      case 3:
+        level3();
+        break;
+      case 4:
+        level4();
+        break;
+      case 5:
+        level5();
+        break;
+      default:
+
+    }
   };
 
   return {
