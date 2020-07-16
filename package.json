@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --config webpack/prod.js ",
-    "start": "webpack-dev-server --config webpack/base.js --open",
+    "start": "npm run build && webpack-dev-server --host=0.0.0.0 --port=$PORT --disable-host-check",
     "game": "webpack --config webpack/prod.js && webpack-dev-server --config webpack/base.js --open",
     "test": "jest"
   },
@@ -61,5 +61,6 @@
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
     }
-  }
+  },
+  "heroku-run-build-script": true
 }
