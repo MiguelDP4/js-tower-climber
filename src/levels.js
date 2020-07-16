@@ -6,6 +6,22 @@ export const levels = (() => {
   let levelScene;
   const loadAnimations = (scene) => {
     scene.anims.create({
+      key: 'gots-left',
+      frames: [{
+        key: 'gots',
+        frame: 0
+      }],
+      frameRate: 15
+    });
+    scene.anims.create({
+      key: 'gots-right',
+      frames: [{
+        key: 'gots-right',
+        frame: 0
+      }],
+      frameRate: 15
+    });
+    scene.anims.create({
       key: 'left',
       frames: scene.anims.generateFrameNumbers('monty', {
         start: 4,
@@ -69,16 +85,18 @@ export const levels = (() => {
     gameStatus.platforms = scene.physics.add.staticGroup();
     gameStatus.spines = scene.physics.add.staticGroup();
     gameStatus.goal = scene.physics.add.sprite(0, 0, 'goal').setScale(2);
+    gameStatus.enemies = scene.physics.add.group({ allowGravity: false });
     gameStatus.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
     gameStatus.curtain.setScale(64, 48);
     gameStatus.curtain.setDepth(100);
+    scene.physics.add.collider(gameStatus.enemies, gameStatus.platforms);
+    scene.physics.add.overlap(gameStatus.player, gameStatus.enemies, playerDie, null, scene);
     scene.physics.add.collider(gameStatus.player, gameStatus.platforms);
     scene.physics.add.collider(gameStatus.goal, gameStatus.platforms);
     scene.physics.add.overlap(gameStatus.player, gameStatus.goal, winLevel, null, scene);
     scene.physics.add.overlap(gameStatus.player, gameStatus.spines, playerDie, null, scene);
     loadAnimations(scene);
   };
-
 
   const clearGameObjects = () => {
     gameStatus.goal.disableBody(true, true);
@@ -87,6 +105,9 @@ export const levels = (() => {
     gameStatus.isDashing = false;
     gameStatus.goal.disableBody(true, true);
     gameStatus.player.disableBody(true, true);
+    gameStatus.enemies.children.iterate(function(enemy) {
+      enemy.disableBody(true, true);
+    })
     gameStatus.platforms.children.iterate(function (platform) {
       platform.disableBody(true, true);
     });
@@ -142,6 +163,7 @@ export const levels = (() => {
       gameStatus.level += 1;
     } else {
       gameStatus.level = 1;
+      gameStatus.cycles += 1;
     }
     clearGameObjects();
     load(gameStatus.level);
@@ -155,6 +177,7 @@ export const levels = (() => {
       // Show game over screen and ask if player wants to continue
       gameStatus.level = 1;
       gameStatus.lives = 4;
+      gameStatus.cycles = 0;
     }
     gameStatus.livesText.setText(`Lives: ${gameStatus.lives}`);
     clearGameObjects();
@@ -196,6 +219,22 @@ export const levels = (() => {
   };
 
   const level1 = (scene) => {
+    // for(let i = 0; i <= gameStatus.cycles; i+=1) {
+    //   levelHelper.createEnemy(2 * i + 1, 20, 'gots');
+    // }
+    let enemyAmount = 0;
+    if(gameStatus.cycles <= 20) {
+      enemyAmount = gameStatus.cycles;
+    } else {
+      enemyAmount = 21;
+      gameStatus.enemies.children.iterate(function(enemy) {
+        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 10);
+        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 10);
+      });
+    }
+    for(let i = 0; i <= enemyAmount; i+=1) {
+      levelHelper.createEnemy(2 * i + 1, 20, 'gots');
+    }
     levelHelper.drawPlatformSquare(0, 0, 32, 0, 'top-tile');
     levelHelper.drawPlatformSquare(27, 2, 32, 0, 'tile');
     levelHelper.drawPlatformSquare(27, 3, 32, 3, 'top-tile');

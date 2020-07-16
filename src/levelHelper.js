@@ -32,6 +32,15 @@ export const levelHelper = (() => {
     gameStatus.player.y = helpers.matrixPosY(posY);;
   };
 
+  const createEnemy = (posX, posY, key) => {
+    let newEnemy = gameStatus.enemies.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), key);
+    newEnemy.setScale(2);
+    newEnemy.setBounce(1);
+    newEnemy.setCollideWorldBounds(true, 1, 1);
+    newEnemy.setVelocityX(Phaser.Math.Between(-300,300));
+    newEnemy.setVelocityY(Phaser.Math.Between(-300,300));
+  };
+
   const drawPlatformSquare = (cornerX1, cornerY1, cornerX2, cornerY2, key) => {
     let startX = Math.min(cornerX1, cornerX2);
     let startY = Math.min(cornerY1, cornerY2);
@@ -85,7 +94,8 @@ export const levelHelper = (() => {
     drawSpineHorizontalLineFacingUp,
     drawSpineHorizontalLineFacingDown,
     drawSpineVerticalLineFacingLeft,
-    drawSpineVerticalLineFacingRight
+    drawSpineVerticalLineFacingRight,
+    createEnemy
   };
 })();
 

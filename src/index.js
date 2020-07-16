@@ -43,6 +43,8 @@ function preload() {
   dashDistance = maxDashDistance;
   shadowKillTimer = 6;
 
+  this.load.image('gots-right', '../src/assets/gots-right.png');
+  this.load.image('gots', '../src/assets/gots.png');
   this.load.image('white', '../src/assets/white-square.png');
   this.load.image('spinesup', '../src/assets/spinesup.png');
   this.load.image('spinesdown', '../src/assets/spinesdown.png');
@@ -189,4 +191,11 @@ function update() {
     else if (gameStatus.facing === 'right')
       gameStatus.player.anims.play('jumpright', true);
   }
+  gameStatus.enemies.children.iterate(function(enemy) {
+    if(enemy.body.velocity.x >= 0) {
+      enemy.anims.play('gots-right');
+    } else {
+      enemy.anims.play('gots-left');
+    }
+  });
 }
