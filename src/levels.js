@@ -57,14 +57,32 @@ export const levels = (() => {
     });
   };
 
+  const setupGameObjects = (scene) => {
+    gameStatus.livesText = scene.add.text(24, 24, `Lives: ${gameStatus.lives}`, {
+      fontSize: '32px',
+      fill: '#000'
+    });
+    gameStatus.player = scene.physics.add.sprite(0, 0, 'monty');
+    gameStatus.player.setCollideWorldBounds(true);
+    gameStatus.player.setScale(3);
+    gameStatus.playerDashShadow = scene.add.group();
+    gameStatus.platforms = scene.physics.add.staticGroup();
+    gameStatus.spines = scene.physics.add.staticGroup();
+    gameStatus.goal = scene.physics.add.sprite(0, 0, 'goal').setScale(2);
+    gameStatus.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
+    gameStatus.curtain.setScale(64, 48);
+    gameStatus.curtain.setDepth(100);
+    scene.physics.add.collider(gameStatus.player, gameStatus.platforms);
+    scene.physics.add.collider(gameStatus.goal, gameStatus.platforms);
+    scene.physics.add.overlap(gameStatus.player, gameStatus.goal, winLevel, null, scene);
+    scene.physics.add.overlap(gameStatus.player, gameStatus.spines, playerDie, null, scene);
+    loadAnimations(scene);
+  };
+
+
   const clearGameObjects = () => {
     gameStatus.goal.disableBody(true, true);
-    if (gameStatus.level < 4) {
-      gameStatus.level += 1;
-    } else {
-      gameStatus.level = 1;
-    }
-
+    gameStatus.livesText.destroy();
     gameStatus.facing = 'right';
     gameStatus.isDashing = false;
     gameStatus.goal.disableBody(true, true);
@@ -80,29 +98,6 @@ export const levels = (() => {
       gameStatus.playerDashShadow.killAndHide(gameStatus.playerDashShadow.getFirstAlive());
     }
     gameStatus.finishLevel = false;
-  };
-
-  const winLevel = () => {
-    clearGameObjects();
-    load(gameStatus.level);
-  };
-
-  const setupGameObjects = (scene) => {
-    gameStatus.player = scene.physics.add.sprite(0, 0, 'monty');
-    gameStatus.player.setCollideWorldBounds(true);
-    gameStatus.player.setScale(3);
-    gameStatus.playerDashShadow = scene.add.group();
-    gameStatus.platforms = scene.physics.add.staticGroup();
-    gameStatus.spines = scene.physics.add.staticGroup();
-    gameStatus.goal = scene.physics.add.sprite(0, 0, 'goal').setScale(2);
-    gameStatus.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
-    gameStatus.curtain.setScale(64, 48);
-    gameStatus.curtain.setDepth(100);
-    scene.physics.add.collider(gameStatus.player, gameStatus.spines);
-    scene.physics.add.collider(gameStatus.player, gameStatus.platforms);
-    scene.physics.add.collider(gameStatus.goal, gameStatus.platforms);
-    scene.physics.add.overlap(gameStatus.player, gameStatus.goal, winLevel, null, scene);
-    loadAnimations(scene);
   };
 
   const load = (levelNumber, scene = levelScene) => {
@@ -140,6 +135,30 @@ export const levels = (() => {
       default:
 
     }
+  };
+
+  const winLevel = () => {
+    if (gameStatus.level < 4) {
+      gameStatus.level += 1;
+    } else {
+      gameStatus.level = 1;
+    }
+    clearGameObjects();
+    load(gameStatus.level);
+  };
+
+  const playerDie = () => {
+    if(gameStatus.lives > 0){
+      gameStatus.lives -= 1;
+    } else {
+      // Todo:
+      // Show game over screen and ask if player wants to continue
+      gameStatus.level = 1;
+      gameStatus.lives = 4;
+    }
+    gameStatus.livesText.setText(`Lives: ${gameStatus.lives}`);
+    clearGameObjects();
+    load(gameStatus.level);
   };
 
   const uncoverScene = () => {

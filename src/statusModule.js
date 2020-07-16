@@ -3,6 +3,8 @@ export const gameStatus = (() => {
   let platforms;
   let goal;
   let level = 1;
+  let lives = 4;
+  let livesText;
   let dashDistance;
   let isDashing = false;
   let playerDashShadow;
@@ -12,6 +14,8 @@ export const gameStatus = (() => {
   let finishLevel = false;
   
   return {  level, 
+            lives,
+            livesText,
             platforms, 
             player, 
             isDashing,
