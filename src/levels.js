@@ -89,6 +89,7 @@ export const levels = (() => {
     gameStatus.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
     gameStatus.curtain.setScale(64, 48);
     gameStatus.curtain.setDepth(100);
+    scene.physics.add.collider(gameStatus.goal, gameStatus.spines);
     scene.physics.add.collider(gameStatus.enemies, gameStatus.platforms);
     scene.physics.add.overlap(gameStatus.player, gameStatus.enemies, playerDie, null, scene);
     scene.physics.add.collider(gameStatus.player, gameStatus.platforms);
@@ -199,37 +200,37 @@ export const levels = (() => {
   };
 
   const plain = () => {
+    let enemyAmount = 0;
+    if(gameStatus.cycles <= 7) {
+      enemyAmount = gameStatus.cycles;
+    } else {
+      enemyAmount = 8;
+    }
+    for(let i = 1; i <= enemyAmount; i+=1) {
+      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      if(enemyAmount === 8) {
+        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
+        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
+      }
+    }
     levelHelper.drawPlatformSquare(0, 0, 31, 0, 'top-tile');
-    levelHelper.drawSpineVerticalLineFacingRight(1, 23, 0);
-    levelHelper.drawSpineVerticalLineFacingLeft(1, 18, 6);
-    levelHelper.drawPlatformSquare(7, 0, 12, 18, 'tile');
-    levelHelper.drawPlatformSquare(5, 19, 12, 19, 'top-tile');
-    levelHelper.drawPlatformSquare(5, 4, 6, 4, 'top-tile');
-    levelHelper.drawPlatformSquare(0, 8, 1, 8, 'top-tile');
-    levelHelper.drawPlatformSquare(5, 12, 6, 12, 'top-tile');
-    levelHelper.drawPlatformSquare(0, 16, 1, 16, 'top-tile');
-    levelHelper.drawSpineHorizontalLineFacingUp(13, 18, 1);
-    levelHelper.drawPlatformSquare(19, 12, 27, 18, 'tile');
-    levelHelper.drawPlatformSquare(19, 9, 20, 11, 'tile');
-    levelHelper.drawPlatformSquare(19, 0, 27, 8, 'tile');
-    levelHelper.drawPlatformSquare(19, 19, 27, 19, 'top-tile');
-    levelHelper.drawSpineHorizontalLineFacingUp(28, 31, 1);
+
     levelHelper.placePlayer(1, 2);
-    levelHelper.placeGoal(21, 10);
+    levelHelper.placeGoal(30, 3);
   };
 
   const level1 = (scene) => {
     let enemyAmount = 0;
-    if(gameStatus.cycles <= 20) {
+    if(gameStatus.cycles <= 7) {
       enemyAmount = gameStatus.cycles;
     } else {
-      enemyAmount = 21;
+      enemyAmount = 8;
     }
     for(let i = 1; i <= enemyAmount; i+=1) {
-      let enemy = levelHelper.createEnemy(2 * i + 1, 20, 'gots');
-      if(enemyAmount === 21) {
-        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 10);
-        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 10);
+      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      if(enemyAmount === 8) {
+        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
+        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
       }
     }
     levelHelper.drawPlatformSquare(0, 0, 32, 0, 'top-tile');
@@ -241,16 +242,16 @@ export const levels = (() => {
 
   const level2 = (scene) => {
     let enemyAmount = 0;
-    if(gameStatus.cycles <= 20) {
+    if(gameStatus.cycles <= 7) {
       enemyAmount = gameStatus.cycles;
     } else {
-      enemyAmount = 21;
+      enemyAmount = 8;
     }
     for(let i = 1; i <= enemyAmount; i+=1) {
-      let enemy = levelHelper.createEnemy(2 * i + 1, 20, 'gots');
-      if(enemyAmount === 21) {
-        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 10);
-        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 10);
+      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      if(enemyAmount === 8) {
+        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
+        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
       }
     }
     levelHelper.drawPlatformSquare(0, 0, 12, 0, 'top-tile');
@@ -267,16 +268,16 @@ export const levels = (() => {
 
   const level3 = (scene) => {
     let enemyAmount = 0;
-    if(gameStatus.cycles <= 20) {
+    if(gameStatus.cycles <= 7) {
       enemyAmount = gameStatus.cycles;
     } else {
-      enemyAmount = 21;
+      enemyAmount = 8;
     }
     for(let i = 1; i <= enemyAmount; i+=1) {
-      let enemy = levelHelper.createEnemy(2 * i + 1, 20, 'gots');
-      if(enemyAmount === 21) {
-        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 10);
-        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 10);
+      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      if(enemyAmount === 8) {
+        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
+        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
       }
     }
 
@@ -332,6 +333,40 @@ export const levels = (() => {
     levelHelper.placePlayer(1, 2);
     levelHelper.placeGoal(21, 10);
   };
+
+  const level5 = (scene) => {
+    let enemyAmount = 0;
+    if(gameStatus.cycles <= 7) {
+      enemyAmount = gameStatus.cycles;
+    } else {
+      enemyAmount = 8;
+    }
+    for(let i = 1; i <= enemyAmount; i+=1) {
+      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      if(enemyAmount === 8) {
+        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
+        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
+      }
+    }
+    levelHelper.drawPlatformSquare(0, 0, 6, 0, 'top-tile');
+    levelHelper.drawSpineHorizontalLineFacingUp(7, 31, 0);
+    levelHelper.drawPlatformSquare(10, 8, 10, 15, 'tile');
+    levelHelper.drawPlatformSquare(10, 16, 10, 16, 'top-tile');
+    levelHelper.drawPlatformSquare(14, 8, 14, 16, 'tile');
+    levelHelper.drawPlatformSquare(15, 8, 31, 16, 'tile');
+    levelHelper.drawPlatformSquare(14, 17, 14, 17, 'top-tile');
+    levelHelper.drawPlatformSquare(0, 16, 0, 16, 'top-tile');
+    levelHelper.drawPlatformSquare(0, 0, 0, 15, 'tile');
+    levelHelper.drawPlatformSquare(1, 4, 1, 4, 'top-tile');
+    levelHelper.drawPlatformSquare(9, 8, 9, 8, 'top-tile');
+    levelHelper.drawPlatformSquare(1, 12, 1, 12, 'top-tile');
+    levelHelper.drawPlatformSquare(9, 16, 9, 16, 'top-tile');
+    levelHelper.drawSpineHorizontalLineFacingUp(15, 31, 17);
+    levelHelper.drawPlatformSquare(15, 16, 31, 16, 'tile');
+    levelHelper.placePlayer(1, 2);
+    levelHelper.placeGoal(20, 3);
+  };
+
   return {
     load,
     uncoverScene,
