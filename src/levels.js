@@ -225,8 +225,8 @@ export const levels = (() => {
     } else {
       enemyAmount = 21;
     }
-    for(let i = 0; i <= enemyAmount; i+=1) {
-      enemy = levelHelper.createEnemy(2 * i + 1, 20, 'gots');
+    for(let i = 1; i <= enemyAmount; i+=1) {
+      let enemy = levelHelper.createEnemy(2 * i + 1, 20, 'gots');
       if(enemyAmount === 21) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 10);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 10);
@@ -240,6 +240,19 @@ export const levels = (() => {
   };
 
   const level2 = (scene) => {
+    let enemyAmount = 0;
+    if(gameStatus.cycles <= 20) {
+      enemyAmount = gameStatus.cycles;
+    } else {
+      enemyAmount = 21;
+    }
+    for(let i = 1; i <= enemyAmount; i+=1) {
+      let enemy = levelHelper.createEnemy(2 * i + 1, 20, 'gots');
+      if(enemyAmount === 21) {
+        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 10);
+        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 10);
+      }
+    }
     levelHelper.drawPlatformSquare(0, 0, 12, 0, 'top-tile');
     levelHelper.drawPlatformSquare(18, 0, 31, 0, 'top-tile');
     levelHelper.drawSpineHorizontalLineFacingUp(13, 17, 0);
@@ -253,6 +266,20 @@ export const levels = (() => {
   };
 
   const level3 = (scene) => {
+    let enemyAmount = 0;
+    if(gameStatus.cycles <= 20) {
+      enemyAmount = gameStatus.cycles;
+    } else {
+      enemyAmount = 21;
+    }
+    for(let i = 1; i <= enemyAmount; i+=1) {
+      let enemy = levelHelper.createEnemy(2 * i + 1, 20, 'gots');
+      if(enemyAmount === 21) {
+        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 10);
+        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 10);
+      }
+    }
+
     levelHelper.drawPlatformSquare(0, 0, 25, 0, 'top-tile');
     levelHelper.drawPlatformSquare(15, 16, 28, 16, 'top-tile');
     levelHelper.drawSpineHorizontalLineFacingDown(15, 28, 15);
@@ -274,6 +301,19 @@ export const levels = (() => {
   };
 
   const level4 = (scene) => {
+    let enemyAmount = 0;
+    if(gameStatus.cycles <= 7) {
+      enemyAmount = gameStatus.cycles;
+    } else {
+      enemyAmount = 8;
+    }
+    for(let i = 1; i <= enemyAmount; i+=1) {
+      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      if(enemyAmount === 8) {
+        enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
+        enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
+      }
+    }
     levelHelper.drawPlatformSquare(0, 0, 31, 0, 'top-tile');
     levelHelper.drawSpineVerticalLineFacingRight(1, 23, 0);
     levelHelper.drawSpineVerticalLineFacingLeft(1, 18, 6);
