@@ -4,35 +4,36 @@ export const gameStatus = (() => {
   let platforms;
   let enemies;
   let goal;
-  let level = -1;
-  let lives = 4;
-  let cycles = 0;
+  const level = -1;
+  const lives = 4;
+  const cycles = 0;
   let livesText;
   let dashDistance;
-  let isDashing = false;
+  const isDashing = false;
   let playerDashShadow;
-  let facing = 'right';
+  const facing = 'right';
   let curtain;
   let spines;
-  let finishLevel = false;
-  
-  return {  titleScreen,
-            level, 
-            lives,
-            livesText,
-            cycles,
-            platforms, 
-            enemies,
-            player,
-            isDashing,
-            playerDashShadow,
-            dashDistance, 
-            facing, 
-            goal, 
-            curtain, 
-            spines,
-            finishLevel 
-          };
+  const finishLevel = false;
+
+  return {
+    titleScreen,
+    level,
+    lives,
+    livesText,
+    cycles,
+    platforms,
+    enemies,
+    player,
+    isDashing,
+    playerDashShadow,
+    dashDistance,
+    facing,
+    goal,
+    curtain,
+    spines,
+    finishLevel,
+  };
 })();
 
 export default gameStatus;
