@@ -75,7 +75,6 @@ export const levels = (() => {
 
   const setupGameObjects = (scene) => {
     if (gameStatus.level === -1) {
-      console.log("showing title screen");
       gameStatus.titleScreen = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'title');
     } else {
       gameStatus.livesText = scene.add.text(24, 24, `Lives: ${gameStatus.lives}`, {
@@ -144,7 +143,7 @@ export const levels = (() => {
     if (gameStatus.lives > 0) {
       gameStatus.lives -= 1;
     } else {
-      gameStatus.level = -2;
+      gameStatus.level = -1;
       gameStatus.lives = 4;
       gameStatus.cycles = 0;
     }
@@ -186,7 +185,7 @@ export const levels = (() => {
       }
     }
     levelHelper.drawPlatformSquare(0, 0, 31, 0, 'top-tile');
-
+    levelHelper.drawSpineVerticalLineFacingLeft(2, 2, 2);
     levelHelper.placePlayer(1, 2);
     levelHelper.placeGoal(30, 3);
   };

@@ -68,8 +68,8 @@ function create() {
 }
 
 function update() {
-  console.log(gameStatus.level)
   if (gameStatus.level === -1) {
+    console.log(gameStatus.level);
     if (keys.SPACE.isDown) {
       gameStatus.level += 1;
       gameStatus.titleScreen.destroy();
@@ -145,7 +145,6 @@ function update() {
     } else {
       if (keys.SHIFT.isDown && dashDistance > 0) {
         if (gameStatus.facing == 'right') {
-          console.log("DASHING RIGHT");
           if (dashDistance % 3 === 0) {
             gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(4, 2.7);
           }
@@ -155,7 +154,6 @@ function update() {
           gameStatus.isDashing = true;
           dashDistance -= 1;
         } else {
-          console.log("DASHING LEFT");
           if (dashDistance % 3 === 0) {
             gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpleft').setScale(4, 2.7);
           }
