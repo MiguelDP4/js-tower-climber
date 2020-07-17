@@ -181,7 +181,6 @@ export const levels = (() => {
       }
     }
     levelHelper.drawPlatformSquare(0, 0, 31, 0, 'top-tile');
-    levelHelper.drawSpineVerticalLineFacingLeft(2, 2, 2);
     levelHelper.placePlayer(1, 2);
     levelHelper.placeGoal(30, 3);
   };
