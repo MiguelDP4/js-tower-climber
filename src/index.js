@@ -7,6 +7,10 @@ const config = {
   parent: 'phaser-example',
   width: 1024,
   height: 768,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+},
   pixelArt: true,
   backgroundColor: '#9bd4e8',
   physics: {

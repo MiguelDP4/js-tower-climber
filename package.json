@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "npm run build && webpack-dev-server --host=0.0.0.0 --port=$PORT --disable-host-check"
+    "start": "npm run build && webpack-dev-server --host=0.0.0.0 --port=$PORT --disable-host-check",
+    "startlocal": "webpack-dev-server "
   },
   "author": "Miguel Dubois",
   "license": "MIT",
