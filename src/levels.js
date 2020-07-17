@@ -1,5 +1,5 @@
-import helpers from "./helpers";
-import levelHelper from "./levelHelper.js";
+import helpers from './helpers';
+import levelHelper from './levelHelper.js';
 import gameStatus from './statusModule';
 
 export const levels = (() => {
@@ -9,67 +9,67 @@ export const levels = (() => {
       key: 'gots-left',
       frames: [{
         key: 'gots',
-        frame: 0
+        frame: 0,
       }],
-      frameRate: 15
+      frameRate: 15,
     });
     scene.anims.create({
       key: 'gots-right',
       frames: [{
         key: 'gots-right',
-        frame: 0
+        frame: 0,
       }],
-      frameRate: 15
+      frameRate: 15,
     });
     scene.anims.create({
       key: 'left',
       frames: scene.anims.generateFrameNumbers('monty', {
         start: 4,
-        end: 5
+        end: 5,
       }),
       frameRate: 6,
-      repeat: -1
+      repeat: -1,
     });
     scene.anims.create({
       key: 'right',
       frames: scene.anims.generateFrameNumbers('monty', {
         start: 0,
-        end: 1
+        end: 1,
       }),
       frameRate: 6,
-      repeat: -1
+      repeat: -1,
     });
     scene.anims.create({
       key: 'idleleft',
       frames: [{
         key: 'monty',
-        frame: 4
+        frame: 4,
       }],
-      frameRate: 20
+      frameRate: 20,
     });
     scene.anims.create({
       key: 'idleright',
       frames: [{
         key: 'monty',
-        frame: 0
+        frame: 0,
       }],
-      frameRate: 20
+      frameRate: 20,
     });
     scene.anims.create({
       key: 'jumpleft',
       frames: [{
         key: 'monty',
-        frame: 3
+        frame: 3,
       }],
-      frameRate: 20
+      frameRate: 20,
     });
     scene.anims.create({
       key: 'jumpright',
       frames: [{
         key: 'monty',
-        frame: 2
+        frame: 2,
       }],
-      frameRate: 20
+      frameRate: 20,
     });
   };
 
@@ -79,7 +79,7 @@ export const levels = (() => {
     } else {
       gameStatus.livesText = scene.add.text(24, 24, `Lives: ${gameStatus.lives}`, {
         fontSize: '32px',
-        fill: '#000'
+        fill: '#000',
       });
       gameStatus.player = scene.physics.add.sprite(0, 0, 'monty');
       gameStatus.player.setCollideWorldBounds(true);
@@ -89,7 +89,7 @@ export const levels = (() => {
       gameStatus.spines = scene.physics.add.staticGroup();
       gameStatus.goal = scene.physics.add.sprite(0, 0, 'goal').setScale(2);
       gameStatus.enemies = scene.physics.add.group({
-        allowGravity: false
+        allowGravity: false,
       });
       gameStatus.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
       gameStatus.curtain.setScale(64, 48);
@@ -106,26 +106,26 @@ export const levels = (() => {
   };
 
   const clearGameObjects = () => {
-      gameStatus.goal.disableBody(true, true);
-      gameStatus.livesText.destroy();
-      gameStatus.facing = 'right';
-      gameStatus.isDashing = false;
-      gameStatus.goal.disableBody(true, true);
-      gameStatus.player.disableBody(true, true);
-      gameStatus.enemies.children.iterate(function (enemy) {
-        enemy.disableBody(true, true);
-      })
-      gameStatus.platforms.children.iterate(function (platform) {
-        platform.disableBody(true, true);
-      });
-      gameStatus.spines.children.iterate(function (spine) {
-        spine.disableBody(true, true);
-      });
-      gameStatus.curtain.destroy()
-      while (gameStatus.playerDashShadow.getFirstAlive() != null) {
-        gameStatus.playerDashShadow.killAndHide(gameStatus.playerDashShadow.getFirstAlive());
-      }
-      gameStatus.finishLevel = false;
+    gameStatus.goal.disableBody(true, true);
+    gameStatus.livesText.destroy();
+    gameStatus.facing = 'right';
+    gameStatus.isDashing = false;
+    gameStatus.goal.disableBody(true, true);
+    gameStatus.player.disableBody(true, true);
+    gameStatus.enemies.children.iterate((enemy) => {
+      enemy.disableBody(true, true);
+    });
+    gameStatus.platforms.children.iterate((platform) => {
+      platform.disableBody(true, true);
+    });
+    gameStatus.spines.children.iterate((spine) => {
+      spine.disableBody(true, true);
+    });
+    gameStatus.curtain.destroy();
+    while (gameStatus.playerDashShadow.getFirstAlive() != null) {
+      gameStatus.playerDashShadow.killAndHide(gameStatus.playerDashShadow.getFirstAlive());
+    }
+    gameStatus.finishLevel = false;
   };
 
   const winLevel = () => {
@@ -153,22 +153,18 @@ export const levels = (() => {
   };
 
   const uncoverScene = () => {
-    if (gameStatus.curtain.alpha > 0)
-      gameStatus.curtain.alpha -= (0.01 + 0.01 * gameStatus.curtain.alpha);
-    if (gameStatus.curtain.alpha < 0)
-      gameStatus.curtain.alpha = 0;
+    if (gameStatus.curtain.alpha > 0) gameStatus.curtain.alpha -= (0.01 + 0.01 * gameStatus.curtain.alpha);
+    if (gameStatus.curtain.alpha < 0) gameStatus.curtain.alpha = 0;
   };
 
   const coverScene = () => {
-    if (gameStatus.curtain.alpha < 1)
-      gameStatus.curtain.alpha += gameStatus.curtain.alpha * 0.01 + 0.01;
-    if (gameStatus.curtain.alpha > 1)
-      gameStatus.curtain.alpha = 1;
+    if (gameStatus.curtain.alpha < 1) gameStatus.curtain.alpha += gameStatus.curtain.alpha * 0.01 + 0.01;
+    if (gameStatus.curtain.alpha > 1) gameStatus.curtain.alpha = 1;
   };
 
   const startScreen = () => {
 
-  }
+  };
 
   const tutorial = () => {
     let enemyAmount = 0;
@@ -178,7 +174,7 @@ export const levels = (() => {
       enemyAmount = 8;
     }
     for (let i = 1; i <= enemyAmount; i += 1) {
-      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      const enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
@@ -198,7 +194,7 @@ export const levels = (() => {
       enemyAmount = 8;
     }
     for (let i = 1; i <= enemyAmount; i += 1) {
-      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      const enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
@@ -219,7 +215,7 @@ export const levels = (() => {
       enemyAmount = 8;
     }
     for (let i = 1; i <= enemyAmount; i += 1) {
-      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      const enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
@@ -245,7 +241,7 @@ export const levels = (() => {
       enemyAmount = 8;
     }
     for (let i = 1; i <= enemyAmount; i += 1) {
-      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      const enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
@@ -280,7 +276,7 @@ export const levels = (() => {
       enemyAmount = 8;
     }
     for (let i = 1; i <= enemyAmount; i += 1) {
-      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      const enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
@@ -313,7 +309,7 @@ export const levels = (() => {
       enemyAmount = 8;
     }
     for (let i = 1; i <= enemyAmount; i += 1) {
-      let enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
+      const enemy = levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
         enemy.velocity.x = enemy.velocity.x * (gameStatus.cycles / 4);
         enemy.velocity.y = enemy.velocity.y * (gameStatus.cycles / 4);
@@ -373,7 +369,7 @@ export const levels = (() => {
   return {
     load,
     uncoverScene,
-    coverScene
+    coverScene,
   };
 })();
 

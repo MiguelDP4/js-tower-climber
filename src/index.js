@@ -1,10 +1,10 @@
-import Phaser from "phaser";
-import levels from "./levels";
-import gameStatus from "./statusModule";
+import Phaser from 'phaser';
+import levels from './levels';
+import gameStatus from './statusModule';
 
 const config = {
   type: Phaser.AUTO,
-  parent: "phaser-example",
+  parent: 'phaser-example',
   width: 1024,
   height: 768,
   pixelArt: true,
@@ -13,16 +13,16 @@ const config = {
     default: 'arcade',
     arcade: {
       gravity: {
-        y: 1200
+        y: 1200,
       },
-      debug: false
-    }
+      debug: false,
+    },
   },
   scene: {
-    preload: preload,
-    create: create,
-    update: update
-  }
+    preload,
+    create,
+    update,
+  },
 };
 
 const game = new Phaser.Game(config);
@@ -43,23 +43,23 @@ function preload() {
   dashDistance = maxDashDistance;
   shadowKillTimer = 6;
 
-  this.load.image('title', '../src/assets/TitleScreen.png');
-  this.load.image('gots-right', '../src/assets/gots-right.png');
-  this.load.image('gots', '../src/assets/gots.png');
-  this.load.image('white', '../src/assets/white-square.png');
-  this.load.image('spinesup', '../src/assets/spinesup.png');
-  this.load.image('spinesdown', '../src/assets/spinesdown.png');
-  this.load.image('spinesleft', '../src/assets/spinesleft.png');
-  this.load.image('spinesright', '../src/assets/spinesright.png');
-  this.load.image('top-tile', '../src/assets/grassy-red-sand-tile.png');
-  this.load.image('tile', '../src/assets/red-sand-tile.png');
-  this.load.image('goal', '../src/assets/goal-flag.png');
-  this.load.image('montyjumpleft', '../src/assets/monty-jump-left.png');
-  this.load.image('montyjumpright', '../src/assets/monty-jump-right.png');
+  this.load.image('title', '../assets/TitleScreen.png');
+  this.load.image('gots-right', '../assets/gots-right.png');
+  this.load.image('gots', '../assets/gots.png');
+  this.load.image('white', '../assets/white-square.png');
+  this.load.image('spinesup', '../assets/spinesup.png');
+  this.load.image('spinesdown', '../assets/spinesdown.png');
+  this.load.image('spinesleft', '../assets/spinesleft.png');
+  this.load.image('spinesright', '../assets/spinesright.png');
+  this.load.image('top-tile', '../assets/grassy-red-sand-tile.png');
+  this.load.image('tile', '../assets/red-sand-tile.png');
+  this.load.image('goal', '../assets/goal-flag.png');
+  this.load.image('montyjumpleft', '../assets/monty-jump-left.png');
+  this.load.image('montyjumpright', '../assets/monty-jump-right.png');
   this.load.spritesheet('monty',
-    '../src/assets/Monty.png', {
+    '../assets/Monty.png', {
       frameWidth: 8,
-      frameHeight: 16
+      frameHeight: 16,
     });
 }
 
@@ -91,7 +91,7 @@ function update() {
     if (gameStatus.isDashing) {
       gameStatus.player.setScale(4, 2.7);
     } else {
-      gameStatus.player.setScale(3)
+      gameStatus.player.setScale(3);
     }
 
     if (keys.SHIFT.isUp && gameStatus.player.body.touching.down) {
@@ -118,8 +118,7 @@ function update() {
         if (gameStatus.player.body.velocity.x < Math.abs(maxVelX)) {
           gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x - accelerationX);
         }
-        if (gameStatus.player.body.velocity.x < -1 * maxVelX)
-          gameStatus.player.setVelocityX(-1 * maxVelX);
+        if (gameStatus.player.body.velocity.x < -1 * maxVelX) gameStatus.player.setVelocityX(-1 * maxVelX);
       }
       gameStatus.player.anims.play('left', true);
     } else if (keys.D.isDown) {
@@ -138,8 +137,7 @@ function update() {
         if (gameStatus.player.body.velocity.x < maxVelX) {
           gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x + accelerationX);
         }
-        if (gameStatus.player.body.velocity.x > maxVelX)
-          gameStatus.player.setVelocityX(maxVelX);
+        if (gameStatus.player.body.velocity.x > maxVelX) gameStatus.player.setVelocityX(maxVelX);
       }
       gameStatus.player.anims.play('right', true);
     } else {
@@ -193,12 +191,10 @@ function update() {
     }
 
     if (!gameStatus.player.body.touching.down) {
-      if (gameStatus.facing === 'left')
-        gameStatus.player.anims.play('jumpleft', true);
-      else if (gameStatus.facing === 'right')
-        gameStatus.player.anims.play('jumpright', true);
+      if (gameStatus.facing === 'left') gameStatus.player.anims.play('jumpleft', true);
+      else if (gameStatus.facing === 'right') gameStatus.player.anims.play('jumpright', true);
     }
-    gameStatus.enemies.children.iterate(function (enemy) {
+    gameStatus.enemies.children.iterate((enemy) => {
       if (enemy.body.velocity.x >= 0) {
         enemy.anims.play('gots-right');
       } else {
