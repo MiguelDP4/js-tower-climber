@@ -7,6 +7,10 @@
     "type": "git",
     "url": "git+https://github.com/photonstorm/phaser3-project-template.git"
   },
+  "scripts": {
+    "build": "webpack",
+    "start": "npm run build && webpack-dev-server --host=0.0.0.0 --port=$PORT"
+  },
   "author": "Miguel Dubois",
   "license": "MIT",
   "private": true,
