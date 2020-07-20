@@ -1,6 +1,7 @@
 import helpers from './helpers';
 import levelHelper from './levelHelper.js';
 import gameStatus from './statusModule';
+import APIcalls from './APIcalls';
 
 export const levels = (() => {
   let levelScene;
@@ -74,9 +75,79 @@ export const levels = (() => {
   };
 
   const setupGameObjects = (scene) => {
-    if (gameStatus.level === -1) {
+      if (gameStatus.level === -3) {
+        if(gameStatus.keys != null)
+          gameStatus.keys.destroy();
+        let body = document.getElementsByTagName("body")[0];
+        gameStatus.playerNameInput = document.createElement("input");
+        gameStatus.inputButton = document.createElement("button");
+        gameStatus.inputButton.addEventListener("click", function(){
+          let score = gameStatus.cycles + gameStatus.level;
+          if(gameStatus.playerNameInput.value == "") {
+            APIcalls.saveScore("Anonymous", score);
+          } else {
+            APIcalls.saveScore(gameStatus.playerNameInput.value, score);
+          }          
+          gameStatus.playerNameInput.parentNode.removeChild(gameStatus.playerNameInput);
+          gameStatus.inputButton.parentNode.removeChild(gameStatus.inputButton);
+          load(-2);
+        });
+        gameStatus.inputButton.style.position = "absolute";
+        gameStatus.inputButton.style.height = `${body.clientHeight * 0.05}px`;
+        let buttonPositionY = body.clientHeight/2 - parseFloat(gameStatus.inputButton.style.height
+          .substring(0, gameStatus.inputButton.style.height.length - 2)/2);
+        gameStatus.inputButton.style.top = `${buttonPositionY}px`;
+        gameStatus.inputButton.style.width = `${body.clientWidth * 0.15}px`;
+        let buttonPositionX = body.clientWidth/2 - parseFloat(gameStatus.inputButton.style.width
+        .substring(0, gameStatus.inputButton.style.width.length - 2)/2);
+        gameStatus.inputButton.style.left = `${buttonPositionX}px`;
+        gameStatus.inputButton.innerHTML = "Save my Score";
+
+
+        gameStatus.playerNameInput.style.position = "absolute";
+        gameStatus.playerNameInput.style.height = `${body.clientHeight * 0.05}px`;
+        let inputPositionY = body.clientHeight/2 - parseFloat(gameStatus.playerNameInput.style.height
+          .substring(0, gameStatus.playerNameInput.style.height.length - 2)/2);
+        gameStatus.playerNameInput.style.top = `${inputPositionY - body.clientHeight * 0.07}px`;
+        gameStatus.playerNameInput.style.width = `${body.clientWidth * 0.15}px`;
+        let inputPositionX = body.clientWidth/2 - parseFloat(gameStatus.playerNameInput.style.width
+        .substring(0, gameStatus.playerNameInput.style.width.length - 2)/2);
+        gameStatus.playerNameInput.style.left = `${inputPositionX}px`;
+        gameStatus.playerNameInput.placeholder = "Enter your name";
+
+
+        body.append(gameStatus.playerNameInput);
+        body.append(gameStatus.inputButton);
+    } else if (gameStatus.level === -2) {
+      gameStatus.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
+      gameStatus.highScoreText = [];
+      gameStatus.highScoreText[0] = scene.add.text(360, 24, "HIGH SCORES", {
+        fontSize: '48px',
+        fill: '#000',
+      });
+      let allScores;
+      APIcalls.getHighestScores().then(function(resolution) {
+        allScores = resolution.result;
+        allScores.sort(function(a,b) {
+          return a.score - b.score;
+        });
+        for(let i = 1; i < 7; i+=1) {
+          gameStatus.highScoreText[i] = scene.add.text(48, i * 90 + 48, `${i} - ${allScores[i - 1].user} [Score: ${allScores[i - 1].score}]`, {
+            fontSize: '48px',
+            fill: '#000',
+          });
+        }
+        gameStatus.highScoreText[7] = scene.add.text(48, 678, `Press <ENTER> to return to the title screen`, {
+          fontSize: '36px',
+          fill: '#000',
+        });
+      });
+      
+    } else if (gameStatus.level === -1) {
+      gameStatus.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
       gameStatus.titleScreen = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'title');
     } else {
+      gameStatus.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
       gameStatus.livesText = scene.add.text(24, 24, `Lives: ${gameStatus.lives}`, {
         fontSize: '32px',
         fill: '#000',
@@ -143,7 +214,7 @@ export const levels = (() => {
     if (gameStatus.lives > 0) {
       gameStatus.lives -= 1;
     } else {
-      gameStatus.level = -1;
+      gameStatus.level = -3;
       gameStatus.lives = 4;
       gameStatus.cycles = 0;
     }
@@ -160,6 +231,10 @@ export const levels = (() => {
   const coverScene = () => {
     if (gameStatus.curtain.alpha < 1) gameStatus.curtain.alpha += gameStatus.curtain.alpha * 0.01 + 0.01;
     if (gameStatus.curtain.alpha > 1) gameStatus.curtain.alpha = 1;
+  };
+
+  const highScoresScreen = () => {
+
   };
 
   const startScreen = () => {
@@ -335,9 +410,15 @@ export const levels = (() => {
 
   const load = (levelNumber, scene = levelScene) => {
     levelScene = scene;
-    setupGameObjects(scene);
     gameStatus.level = levelNumber;
+    setupGameObjects(scene);
     switch (levelNumber) {
+      case -3:
+        //highScoresScreen(levelNumber, scene);
+      break;
+      case -2:
+        //highScoresScreen(levelNumber, scene);
+      break;
       case -1:
         startScreen();
         break;
@@ -362,6 +443,7 @@ export const levels = (() => {
       default:
         gameStatus.level = -1;
         startScreen();
+        //break;
     }
   };
 

@@ -30,7 +30,6 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-let keys;
 let maxVelX;
 let accelerationX;
 let jumpVel;
@@ -39,7 +38,6 @@ let dashDistance;
 let shadowKillTimer;
 
 function preload() {
-  keys = this.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE');
   maxVelX = 200;
   accelerationX = 20;
   jumpVel = 600;
@@ -68,14 +66,27 @@ function preload() {
 }
 
 function create() {
-  levels.load(-1, this);
+    levels.load(-2, this);
 }
 
 function update() {
-  if (gameStatus.level === -1) {
-    console.log(gameStatus.level);
-    if (keys.SPACE.isDown) {
+  if (gameStatus.level === -3) {
+
+  } else if (gameStatus.level === -2) {
+    if (gameStatus.keys.ENTER.isDown) {
       gameStatus.level += 1;
+      for(let i = 0; i < 8; i+=1) {
+        gameStatus.highScoreText[i].destroy();
+      }
+      levels.load(gameStatus.level);
+    }
+  } else if (gameStatus.level === -1) {
+    if (gameStatus.keys.SPACE.isDown) {
+      gameStatus.level += 1;
+      gameStatus.titleScreen.destroy();
+      levels.load(gameStatus.level);
+    } else if (gameStatus.keys.SHIFT.isDown) {
+      gameStatus.level = -2;
       gameStatus.titleScreen.destroy();
       levels.load(gameStatus.level);
     }
@@ -98,13 +109,13 @@ function update() {
       gameStatus.player.setScale(3);
     }
 
-    if (keys.SHIFT.isUp && gameStatus.player.body.touching.down) {
+    if (gameStatus.keys.SHIFT.isUp && gameStatus.player.body.touching.down) {
       dashDistance = maxDashDistance;
     }
 
-    if (keys.A.isDown) {
+    if (gameStatus.keys.A.isDown) {
       gameStatus.facing = 'left';
-      if (keys.SHIFT.isDown && dashDistance > 0) {
+      if (gameStatus.keys.SHIFT.isDown && dashDistance > 0) {
         if (dashDistance % 3 === 0) {
           gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpleft').setScale(4, 2.7);
         }
@@ -125,9 +136,9 @@ function update() {
         if (gameStatus.player.body.velocity.x < -1 * maxVelX) gameStatus.player.setVelocityX(-1 * maxVelX);
       }
       gameStatus.player.anims.play('left', true);
-    } else if (keys.D.isDown) {
+    } else if (gameStatus.keys.D.isDown) {
       gameStatus.facing = 'right';
-      if (keys.SHIFT.isDown && dashDistance > 0) {
+      if (gameStatus.keys.SHIFT.isDown && dashDistance > 0) {
         if (dashDistance % 3 === 0) {
           gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(4, 2.7);
         }
@@ -145,7 +156,7 @@ function update() {
       }
       gameStatus.player.anims.play('right', true);
     } else {
-      if (keys.SHIFT.isDown && dashDistance > 0) {
+      if (gameStatus.keys.SHIFT.isDown && dashDistance > 0) {
         if (gameStatus.facing == 'right') {
           if (dashDistance % 3 === 0) {
             gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(4, 2.7);
@@ -186,11 +197,11 @@ function update() {
       }
     }
 
-    if (keys.SPACE.isDown && gameStatus.player.body.touching.down) {
+    if (gameStatus.keys.SPACE.isDown && gameStatus.player.body.touching.down) {
       gameStatus.player.setVelocityY(-1 * jumpVel);
     }
 
-    if (keys.SPACE.isUp && !gameStatus.player.body.touching.down && gameStatus.player.body.velocity.y < (-1 * jumpVel / 2)) {
+    if (gameStatus.keys.SPACE.isUp && !gameStatus.player.body.touching.down && gameStatus.player.body.velocity.y < (-1 * jumpVel / 2)) {
       gameStatus.player.setVelocityY(-1 * jumpVel / 2);
     }
 

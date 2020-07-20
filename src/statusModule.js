@@ -4,9 +4,13 @@ export const gameStatus = (() => {
   let platforms;
   let enemies;
   let goal;
-  const level = -1;
+  let playerNameInput;
+  let inputButton;
+  let level;
   const lives = 4;
   const cycles = 0;
+  let highScoreScreen;
+  let highScoreText;
   let livesText;
   let dashDistance;
   const isDashing = false;
@@ -15,9 +19,12 @@ export const gameStatus = (() => {
   let curtain;
   let spines;
   const finishLevel = false;
+  let keys;
 
   return {
     titleScreen,
+    highScoreScreen,
+    highScoreText,
     level,
     lives,
     livesText,
@@ -33,6 +40,9 @@ export const gameStatus = (() => {
     curtain,
     spines,
     finishLevel,
+    playerNameInput,
+    inputButton,
+    keys
   };
 })();
 
