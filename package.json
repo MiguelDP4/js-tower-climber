@@ -29,10 +29,10 @@
     "jest": "^26.1.0",
     "jest-webpack-resolver": "^0.3.0",
     "raw-loader": "^0.5.1",
-    "stylelint": "^13.3.3",
-    "stylelint-config-standard": "^20.0.0",
+    "stylelint": "13.3.x",
+    "stylelint-config-standard": "20.0.x",
     "stylelint-csstree-validator": "^1.8.0",
-    "stylelint-scss": "^3.17.2",
+    "stylelint-scss": "3.17.x",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.0.0"
   },

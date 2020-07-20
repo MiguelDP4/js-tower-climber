@@ -1,5 +1,4 @@
 import { helpers } from '../helpers';
-import { TestScheduler } from 'jest';
 
 test('Gets the adequate tile position for them to be on a grid', () => {
   expect(helpers.matrixPosX(5)).toBe(176);
