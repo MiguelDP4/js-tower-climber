@@ -63,17 +63,21 @@ function preload() {
       frameWidth: 8,
       frameHeight: 16,
     });
+  this.load.audio('music', '../assets/Ehrling-Adventure-Sax Education-Typhoon.mp3');
 }
 
 function create() {
+    gameStatus.music = this.sound.add('music');
     levels.load(-1, this);
+    
 }
 
 function update() {
   if (gameStatus.level === -3) {
-
+    this.input.keyboard.enabled = false;
   } else if (gameStatus.level === -2) {
-    if (gameStatus.keys.ENTER.isDown) {
+      this.input.keyboard.enabled = true;
+      if (gameStatus.keys.ENTER.isDown) {
       gameStatus.level += 1;
       for(let i = 0; i < 8; i+=1) {
         gameStatus.highScoreText[i].destroy();
@@ -81,7 +85,8 @@ function update() {
       levels.load(gameStatus.level);
     }
   } else if (gameStatus.level === -1) {
-    if (gameStatus.keys.SPACE.isDown) {
+      this.input.keyboard.enabled = true;
+      if (gameStatus.keys.SPACE.isDown) {
       gameStatus.level += 1;
       gameStatus.titleScreen.destroy();
       levels.load(gameStatus.level);
@@ -91,7 +96,8 @@ function update() {
       levels.load(gameStatus.level);
     }
   } else {
-    if (shadowKillTimer > 0) {
+      this.input.keyboard.enabled = true;
+      if (shadowKillTimer > 0) {
       shadowKillTimer -= 1;
     } else {
       shadowKillTimer = 6;

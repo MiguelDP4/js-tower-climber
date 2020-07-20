@@ -1,4 +1,3 @@
-import helpers from './helpers';
 import levelHelper from './levelHelper.js';
 import gameStatus from './statusModule';
 import APIcalls from './APIcalls';
@@ -76,18 +75,17 @@ export const levels = (() => {
 
   const setupGameObjects = (scene) => {
       if (gameStatus.level === -3) {
-        if(gameStatus.keys != null)
-          gameStatus.keys.destroy();
+        gameStatus.music.stop();
         let body = document.getElementsByTagName("body")[0];
         gameStatus.playerNameInput = document.createElement("input");
         gameStatus.inputButton = document.createElement("button");
         gameStatus.inputButton.addEventListener("click", function(){
-          let score = gameStatus.cycles * 5 + gameStatus.level;
           if(gameStatus.playerNameInput.value == "") {
-            APIcalls.saveScore("Anonymous", score);
+            APIcalls.saveScore("Anonymous", gameStatus.score);
           } else {
-            APIcalls.saveScore(gameStatus.playerNameInput.value, score);
+            APIcalls.saveScore(gameStatus.playerNameInput.value, gameStatus.score);
           }          
+          gameStatus.score = 0;
           gameStatus.playerNameInput.parentNode.removeChild(gameStatus.playerNameInput);
           gameStatus.inputButton.parentNode.removeChild(gameStatus.inputButton);
           load(-2);
@@ -119,6 +117,7 @@ export const levels = (() => {
         body.append(gameStatus.playerNameInput);
         body.append(gameStatus.inputButton);
     } else if (gameStatus.level === -2) {
+      gameStatus.music.stop();
       gameStatus.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
       gameStatus.highScoreText = [];
       gameStatus.highScoreText[0] = scene.add.text(360, 24, "HIGH SCORES", {
@@ -128,9 +127,8 @@ export const levels = (() => {
       let allScores;
       APIcalls.getHighestScores().then(function(resolution) {
         allScores = resolution.result;
-        allScores.sort(function(a,b) {
-          return a.score - b.score;
-        });
+        allScores.sort((a,b) => b.score - a.score);
+        console.log(allScores);
         for(let i = 1; i < 7; i+=1) {
           gameStatus.highScoreText[i] = scene.add.text(48, i * 90 + 48, `${i} - ${allScores[i - 1].user} [Score: ${allScores[i - 1].score}]`, {
             fontSize: '48px',
@@ -144,9 +142,13 @@ export const levels = (() => {
       });
       
     } else if (gameStatus.level === -1) {
+      gameStatus.music.stop();
       gameStatus.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
       gameStatus.titleScreen = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'title');
     } else {
+      if(!gameStatus.music.isPlaying){
+        gameStatus.music.play();
+      }
       gameStatus.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
       gameStatus.livesText = scene.add.text(24, 24, `Lives: ${gameStatus.lives}`, {
         fontSize: '32px',
@@ -214,6 +216,7 @@ export const levels = (() => {
     if (gameStatus.lives > 0) {
       gameStatus.lives -= 1;
     } else {
+      gameStatus.score = gameStatus.level + gameStatus.cycles * 5;
       gameStatus.level = -3;
       gameStatus.lives = 4;
       gameStatus.cycles = 0;
