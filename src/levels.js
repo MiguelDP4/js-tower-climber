@@ -82,7 +82,7 @@ export const levels = (() => {
         gameStatus.playerNameInput = document.createElement("input");
         gameStatus.inputButton = document.createElement("button");
         gameStatus.inputButton.addEventListener("click", function(){
-          let score = gameStatus.cycles + gameStatus.level;
+          let score = gameStatus.cycles * 5 + gameStatus.level;
           if(gameStatus.playerNameInput.value == "") {
             APIcalls.saveScore("Anonymous", score);
           } else {

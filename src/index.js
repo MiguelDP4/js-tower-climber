@@ -66,7 +66,7 @@ function preload() {
 }
 
 function create() {
-    levels.load(-2, this);
+    levels.load(-1, this);
 }
 
 function update() {
