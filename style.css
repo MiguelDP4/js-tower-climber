@@ -1,0 +1,17 @@
+html {
+  background-color: #1a4c6d;
+}
+
+body {
+  display: flex;
+  height: 97vh !important;
+}
+
+canvas {
+  margin: 0 auto;
+}
+
+div {
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+}
