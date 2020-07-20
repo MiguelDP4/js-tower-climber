@@ -1,26 +1,28 @@
-import gameStatus from './statusModule';
-import helpers from "./helpers";
+import { gameStatus } from './statusModule';
+import { helpers } from './helpers';
 
 export const levelHelper = (() => {
   const placePlatformTile = (key, posX, posY) => {
-    gameStatus.platforms.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), key).setScale(2).refreshBody();
+    gameStatus.platforms.create(helpers.matrixPosX(posX),
+      helpers.matrixPosY(posY), key)
+      .setScale(2).refreshBody();
   };
 
   const placeSpineTileFacingUp = (posX, posY) => {
     gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesup').setScale(2).refreshBody();
-  }
+  };
 
   const placeSpineTileFacingDown = (posX, posY) => {
     gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesdown').setScale(2).refreshBody();
-  }
+  };
 
   const placeSpineTileFacingLeft = (posX, posY) => {
     gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesleft').setScale(2).refreshBody();
-  }
+  };
 
   const placeSpineTileFacingRight = (posX, posY) => {
     gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesright').setScale(2).refreshBody();
-  }
+  };
 
   const placeGoal = (posX, posY) => {
     gameStatus.goal.x = helpers.matrixPosX(posX);
@@ -28,61 +30,62 @@ export const levelHelper = (() => {
   };
 
   const placePlayer = (posX, posY) => {
-    gameStatus.player.x = helpers.matrixPosX(posX);;
-    gameStatus.player.y = helpers.matrixPosY(posY);;
+    gameStatus.player.x = helpers.matrixPosX(posX);
+    gameStatus.player.y = helpers.matrixPosY(posY);
   };
 
   const createEnemy = (posX, posY, key) => {
-    let newEnemy = gameStatus.enemies.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), key);
+    const newEnemy = gameStatus.enemies.create(helpers.matrixPosX(posX),
+      helpers.matrixPosY(posY), key);
     newEnemy.setScale(2);
     newEnemy.setBounce(1);
     newEnemy.setCollideWorldBounds(true, 1, 1);
-    newEnemy.setVelocityX(Phaser.Math.Between(-300,300));
-    newEnemy.setVelocityY(Phaser.Math.Between(-300,300));
+    newEnemy.setVelocityX(helpers.randomBetween(-300, 300));
+    newEnemy.setVelocityY(helpers.randomBetween(-300, 300));
     return newEnemy;
   };
 
   const drawPlatformSquare = (cornerX1, cornerY1, cornerX2, cornerY2, key) => {
-    let startX = Math.min(cornerX1, cornerX2);
-    let startY = Math.min(cornerY1, cornerY2);
-    let finishX = Math.max(cornerX1, cornerX2);
-    let finishY = Math.max(cornerY1, cornerY2);
+    const startX = Math.min(cornerX1, cornerX2);
+    const startY = Math.min(cornerY1, cornerY2);
+    const finishX = Math.max(cornerX1, cornerX2);
+    const finishY = Math.max(cornerY1, cornerY2);
 
-    for(let i = startX; i <= finishX; i +=1 ) {
-      for(let j = startY; j <= finishY; j += 1) {
+    for (let i = startX; i <= finishX; i += 1) {
+      for (let j = startY; j <= finishY; j += 1) {
         placePlatformTile(key, i, j);
       }
     }
   };
 
   const drawSpineHorizontalLineFacingUp = (start, finish, posY) => {
-    let starting = Math.min(start,finish);
-    let finishing = Math.max(start,finish);
-    for(let i = starting; i <= finishing; i += 1){
+    const starting = Math.min(start, finish);
+    const finishing = Math.max(start, finish);
+    for (let i = starting; i <= finishing; i += 1) {
       placeSpineTileFacingUp(i, posY);
     }
   };
 
   const drawSpineHorizontalLineFacingDown = (start, finish, posY) => {
-    let starting = Math.min(start,finish);
-    let finishing = Math.max(start,finish);
-    for(let i = starting; i <= finishing; i += 1){
+    const starting = Math.min(start, finish);
+    const finishing = Math.max(start, finish);
+    for (let i = starting; i <= finishing; i += 1) {
       placeSpineTileFacingDown(i, posY);
     }
   };
 
   const drawSpineVerticalLineFacingLeft = (start, finish, posX) => {
-    let starting = Math.min(start,finish);
-    let finishing = Math.max(start,finish);
-    for(let i = starting; i <= finishing; i += 1){
+    const starting = Math.min(start, finish);
+    const finishing = Math.max(start, finish);
+    for (let i = starting; i <= finishing; i += 1) {
       placeSpineTileFacingLeft(posX, i);
     }
   };
 
   const drawSpineVerticalLineFacingRight = (start, finish, posX) => {
-    let starting = Math.min(start,finish);
-    let finishing = Math.max(start,finish);
-    for(let i = starting; i <= finishing; i += 1){
+    const starting = Math.min(start, finish);
+    const finishing = Math.max(start, finish);
+    for (let i = starting; i <= finishing; i += 1) {
       placeSpineTileFacingRight(posX, i);
     }
   };
@@ -96,7 +99,7 @@ export const levelHelper = (() => {
     drawSpineHorizontalLineFacingDown,
     drawSpineVerticalLineFacingLeft,
     drawSpineVerticalLineFacingRight,
-    createEnemy
+    createEnemy,
   };
 })();
 
