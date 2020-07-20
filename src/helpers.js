@@ -7,9 +7,11 @@ export const helpers = (() => {
 
   const matrixPosY = (posY) => 768 - (16 + posY * 32);
 
+  const randomBetween = (min, max) => Math.floor(Math.random() * (max - min)) + min;
   return {
     matrixPosX,
     matrixPosY,
+    randomBetween,
   };
 })();
 

@@ -76,42 +76,10 @@ var _phaser2 = _interopRequireDefault(_phaser);
 
 var _levels = __webpack_require__(3);
 
-var _levels2 = _interopRequireDefault(_levels);
-
 var _statusModule = __webpack_require__(0);
-
-var _statusModule2 = _interopRequireDefault(_statusModule);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var config = {
-  type: _phaser2.default.AUTO,
-  parent: 'phaser-example',
-  width: 1024,
-  height: 768,
-  scale: {
-    mode: _phaser2.default.Scale.FIT,
-    autoCenter: _phaser2.default.Scale.CENTER_BOTH
-  },
-  pixelArt: true,
-  backgroundColor: '#9bd4e8',
-  physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: {
-        y: 1200
-      },
-      debug: false
-    }
-  },
-  scene: {
-    preload: preload,
-    create: create,
-    update: update
-  }
-};
-
-var game = new _phaser2.default.Game(config);
 var maxVelX = void 0;
 var accelerationX = void 0;
 var jumpVel = void 0;
@@ -148,32 +116,32 @@ function preload() {
 }
 
 function create() {
-  _statusModule2.default.music = this.sound.add('music');
-  _levels2.default.load(-1, this);
+  _statusModule.gameStatus.music = this.sound.add('music');
+  _levels.levels.load(-1, this);
 }
 
 function update() {
-  if (_statusModule2.default.level === -3) {
+  if (_statusModule.gameStatus.level === -3) {
     this.input.keyboard.enabled = false;
-  } else if (_statusModule2.default.level === -2) {
+  } else if (_statusModule.gameStatus.level === -2) {
     this.input.keyboard.enabled = true;
-    if (_statusModule2.default.keys.ENTER.isDown) {
-      _statusModule2.default.level += 1;
+    if (_statusModule.gameStatus.keys.ENTER.isDown) {
+      _statusModule.gameStatus.level += 1;
       for (var i = 0; i < 8; i += 1) {
-        _statusModule2.default.highScoreText[i].destroy();
+        _statusModule.gameStatus.highScoreText[i].destroy();
       }
-      _levels2.default.load(_statusModule2.default.level);
+      _levels.levels.load(_statusModule.gameStatus.level);
     }
-  } else if (_statusModule2.default.level === -1) {
+  } else if (_statusModule.gameStatus.level === -1) {
     this.input.keyboard.enabled = true;
-    if (_statusModule2.default.keys.SPACE.isDown) {
-      _statusModule2.default.level += 1;
-      _statusModule2.default.titleScreen.destroy();
-      _levels2.default.load(_statusModule2.default.level);
-    } else if (_statusModule2.default.keys.SHIFT.isDown) {
-      _statusModule2.default.level = -2;
-      _statusModule2.default.titleScreen.destroy();
-      _levels2.default.load(_statusModule2.default.level);
+    if (_statusModule.gameStatus.keys.SPACE.isDown) {
+      _statusModule.gameStatus.level += 1;
+      _statusModule.gameStatus.titleScreen.destroy();
+      _levels.levels.load(_statusModule.gameStatus.level);
+    } else if (_statusModule.gameStatus.keys.SHIFT.isDown) {
+      _statusModule.gameStatus.level = -2;
+      _statusModule.gameStatus.titleScreen.destroy();
+      _levels.levels.load(_statusModule.gameStatus.level);
     }
   } else {
     this.input.keyboard.enabled = true;
@@ -181,120 +149,122 @@ function update() {
       shadowKillTimer -= 1;
     } else {
       shadowKillTimer = 6;
-      _statusModule2.default.playerDashShadow.killAndHide(_statusModule2.default.playerDashShadow.getFirstAlive());
+      _statusModule.gameStatus.playerDashShadow.killAndHide(_statusModule.gameStatus.playerDashShadow.getFirstAlive());
     }
-    if (_statusModule2.default.finishLevel) {
-      _levels2.default.coverScene();
+    if (_statusModule.gameStatus.finishLevel) {
+      _levels.levels.coverScene();
     } else {
-      _levels2.default.uncoverScene();
+      _levels.levels.uncoverScene();
     }
 
-    if (_statusModule2.default.isDashing) {
-      _statusModule2.default.player.setScale(4, 2.7);
+    if (_statusModule.gameStatus.isDashing) {
+      _statusModule.gameStatus.player.setScale(4, 2.7);
     } else {
-      _statusModule2.default.player.setScale(3);
+      _statusModule.gameStatus.player.setScale(3);
     }
 
-    if (_statusModule2.default.keys.SHIFT.isUp && _statusModule2.default.player.body.touching.down) {
+    if (_statusModule.gameStatus.keys.SHIFT.isUp && _statusModule.gameStatus.player.body.touching.down) {
       dashDistance = maxDashDistance;
     }
 
-    if (_statusModule2.default.keys.A.isDown) {
-      _statusModule2.default.facing = 'left';
-      if (_statusModule2.default.keys.SHIFT.isDown && dashDistance > 0) {
+    if (_statusModule.gameStatus.keys.A.isDown) {
+      _statusModule.gameStatus.facing = 'left';
+      if (_statusModule.gameStatus.keys.SHIFT.isDown && dashDistance > 0) {
         if (dashDistance % 3 === 0) {
-          _statusModule2.default.playerDashShadow.create(_statusModule2.default.player.x, _statusModule2.default.player.y, 'montyjumpleft').setScale(4, 2.7);
+          _statusModule.gameStatus.playerDashShadow.create(_statusModule.gameStatus.player.x, _statusModule.gameStatus.player.y, 'montyjumpleft').setScale(4, 2.7);
         }
-        _statusModule2.default.player.setVelocityX(-maxVelX * 2.5);
-        _statusModule2.default.player.setVelocityY(0);
-        _statusModule2.default.isDashing = true;
+        _statusModule.gameStatus.player.setVelocityX(-maxVelX * 2.5);
+        _statusModule.gameStatus.player.setVelocityY(0);
+        _statusModule.gameStatus.isDashing = true;
         dashDistance -= 1;
-        if (_statusModule2.default.facing === 'left') {
-          _statusModule2.default.player.anims.play('jumpleft', true);
-        } else if (_statusModule2.default.facing === 'right') {
-          _statusModule2.default.player.anims.play('jumpright', true);
+        if (_statusModule.gameStatus.facing === 'left') {
+          _statusModule.gameStatus.player.anims.play('jumpleft', true);
+        } else if (_statusModule.gameStatus.facing === 'right') {
+          _statusModule.gameStatus.player.anims.play('jumpright', true);
         }
       } else {
-        _statusModule2.default.isDashing = false;
-        if (_statusModule2.default.player.body.velocity.x < Math.abs(maxVelX)) {
-          _statusModule2.default.player.setVelocityX(_statusModule2.default.player.body.velocity.x - accelerationX);
+        _statusModule.gameStatus.isDashing = false;
+        if (_statusModule.gameStatus.player.body.velocity.x < Math.abs(maxVelX)) {
+          _statusModule.gameStatus.player.setVelocityX(_statusModule.gameStatus.player.body.velocity.x - accelerationX);
         }
-        if (_statusModule2.default.player.body.velocity.x < -1 * maxVelX) _statusModule2.default.player.setVelocityX(-1 * maxVelX);
+        if (_statusModule.gameStatus.player.body.velocity.x < -1 * maxVelX) {
+          _statusModule.gameStatus.player.setVelocityX(-1 * maxVelX);
+        }
       }
-      _statusModule2.default.player.anims.play('left', true);
-    } else if (_statusModule2.default.keys.D.isDown) {
-      _statusModule2.default.facing = 'right';
-      if (_statusModule2.default.keys.SHIFT.isDown && dashDistance > 0) {
+      _statusModule.gameStatus.player.anims.play('left', true);
+    } else if (_statusModule.gameStatus.keys.D.isDown) {
+      _statusModule.gameStatus.facing = 'right';
+      if (_statusModule.gameStatus.keys.SHIFT.isDown && dashDistance > 0) {
         if (dashDistance % 3 === 0) {
-          _statusModule2.default.playerDashShadow.create(_statusModule2.default.player.x, _statusModule2.default.player.y, 'montyjumpright').setScale(4, 2.7);
+          _statusModule.gameStatus.playerDashShadow.create(_statusModule.gameStatus.player.x, _statusModule.gameStatus.player.y, 'montyjumpright').setScale(4, 2.7);
         }
 
-        _statusModule2.default.player.setVelocityX(maxVelX * 2.5);
-        _statusModule2.default.player.setVelocityY(0);
-        _statusModule2.default.isDashing = true;
+        _statusModule.gameStatus.player.setVelocityX(maxVelX * 2.5);
+        _statusModule.gameStatus.player.setVelocityY(0);
+        _statusModule.gameStatus.isDashing = true;
         dashDistance -= 1;
       } else {
-        _statusModule2.default.isDashing = false;
-        if (_statusModule2.default.player.body.velocity.x < maxVelX) {
-          _statusModule2.default.player.setVelocityX(_statusModule2.default.player.body.velocity.x + accelerationX);
+        _statusModule.gameStatus.isDashing = false;
+        if (_statusModule.gameStatus.player.body.velocity.x < maxVelX) {
+          _statusModule.gameStatus.player.setVelocityX(_statusModule.gameStatus.player.body.velocity.x + accelerationX);
         }
-        if (_statusModule2.default.player.body.velocity.x > maxVelX) _statusModule2.default.player.setVelocityX(maxVelX);
+        if (_statusModule.gameStatus.player.body.velocity.x > maxVelX) _statusModule.gameStatus.player.setVelocityX(maxVelX);
       }
-      _statusModule2.default.player.anims.play('right', true);
+      _statusModule.gameStatus.player.anims.play('right', true);
     } else {
-      if (_statusModule2.default.keys.SHIFT.isDown && dashDistance > 0) {
-        if (_statusModule2.default.facing == 'right') {
+      if (_statusModule.gameStatus.keys.SHIFT.isDown && dashDistance > 0) {
+        if (_statusModule.gameStatus.facing === 'right') {
           if (dashDistance % 3 === 0) {
-            _statusModule2.default.playerDashShadow.create(_statusModule2.default.player.x, _statusModule2.default.player.y, 'montyjumpright').setScale(4, 2.7);
+            _statusModule.gameStatus.playerDashShadow.create(_statusModule.gameStatus.player.x, _statusModule.gameStatus.player.y, 'montyjumpright').setScale(4, 2.7);
           }
 
-          _statusModule2.default.player.setVelocityX(maxVelX * 2.5);
-          _statusModule2.default.player.setVelocityY(0);
-          _statusModule2.default.isDashing = true;
+          _statusModule.gameStatus.player.setVelocityX(maxVelX * 2.5);
+          _statusModule.gameStatus.player.setVelocityY(0);
+          _statusModule.gameStatus.isDashing = true;
           dashDistance -= 1;
         } else {
           if (dashDistance % 3 === 0) {
-            _statusModule2.default.playerDashShadow.create(_statusModule2.default.player.x, _statusModule2.default.player.y, 'montyjumpleft').setScale(4, 2.7);
+            _statusModule.gameStatus.playerDashShadow.create(_statusModule.gameStatus.player.x, _statusModule.gameStatus.player.y, 'montyjumpleft').setScale(4, 2.7);
           }
 
-          _statusModule2.default.player.setVelocityX(maxVelX * 2.5 * -1);
-          _statusModule2.default.player.setVelocityY(0);
-          _statusModule2.default.isDashing = true;
+          _statusModule.gameStatus.player.setVelocityX(maxVelX * 2.5 * -1);
+          _statusModule.gameStatus.player.setVelocityY(0);
+          _statusModule.gameStatus.isDashing = true;
           dashDistance -= 1;
         }
       } else {
-        _statusModule2.default.isDashing = false;
-        if (_statusModule2.default.player.body.velocity.x < 0) {
-          _statusModule2.default.player.setVelocityX(_statusModule2.default.player.body.velocity.x + accelerationX);
-          if (_statusModule2.default.player.body.velocity.x > 0) {
-            _statusModule2.default.player.setVelocityX(0);
+        _statusModule.gameStatus.isDashing = false;
+        if (_statusModule.gameStatus.player.body.velocity.x < 0) {
+          _statusModule.gameStatus.player.setVelocityX(_statusModule.gameStatus.player.body.velocity.x + accelerationX);
+          if (_statusModule.gameStatus.player.body.velocity.x > 0) {
+            _statusModule.gameStatus.player.setVelocityX(0);
           }
-        } else if (_statusModule2.default.player.body.velocity.x > 0) {
-          _statusModule2.default.player.setVelocityX(_statusModule2.default.player.body.velocity.x - accelerationX);
-          if (_statusModule2.default.player.body.velocity.x < 0) {
-            _statusModule2.default.player.setVelocityX(0);
+        } else if (_statusModule.gameStatus.player.body.velocity.x > 0) {
+          _statusModule.gameStatus.player.setVelocityX(_statusModule.gameStatus.player.body.velocity.x - accelerationX);
+          if (_statusModule.gameStatus.player.body.velocity.x < 0) {
+            _statusModule.gameStatus.player.setVelocityX(0);
           }
         }
       }
-      if (_statusModule2.default.facing === 'left') {
-        _statusModule2.default.player.anims.play('idleleft', true);
-      } else if (_statusModule2.default.facing === 'right') {
-        _statusModule2.default.player.anims.play('idleright', true);
+      if (_statusModule.gameStatus.facing === 'left') {
+        _statusModule.gameStatus.player.anims.play('idleleft', true);
+      } else if (_statusModule.gameStatus.facing === 'right') {
+        _statusModule.gameStatus.player.anims.play('idleright', true);
       }
     }
 
-    if (_statusModule2.default.keys.SPACE.isDown && _statusModule2.default.player.body.touching.down) {
-      _statusModule2.default.player.setVelocityY(-1 * jumpVel);
+    if (_statusModule.gameStatus.keys.SPACE.isDown && _statusModule.gameStatus.player.body.touching.down) {
+      _statusModule.gameStatus.player.setVelocityY(-1 * jumpVel);
     }
 
-    if (_statusModule2.default.keys.SPACE.isUp && !_statusModule2.default.player.body.touching.down && _statusModule2.default.player.body.velocity.y < -1 * jumpVel / 2) {
-      _statusModule2.default.player.setVelocityY(-1 * jumpVel / 2);
+    if (_statusModule.gameStatus.keys.SPACE.isUp && !_statusModule.gameStatus.player.body.touching.down && _statusModule.gameStatus.player.body.velocity.y < -1 * (jumpVel / 2)) {
+      _statusModule.gameStatus.player.setVelocityY(-1 * (jumpVel / 2));
     }
 
-    if (!_statusModule2.default.player.body.touching.down) {
-      if (_statusModule2.default.facing === 'left') _statusModule2.default.player.anims.play('jumpleft', true);else if (_statusModule2.default.facing === 'right') _statusModule2.default.player.anims.play('jumpright', true);
+    if (!_statusModule.gameStatus.player.body.touching.down) {
+      if (_statusModule.gameStatus.facing === 'left') _statusModule.gameStatus.player.anims.play('jumpleft', true);else if (_statusModule.gameStatus.facing === 'right') _statusModule.gameStatus.player.anims.play('jumpright', true);
     }
-    _statusModule2.default.enemies.children.iterate(function (enemy) {
+    _statusModule.gameStatus.enemies.children.iterate(function (enemy) {
       if (enemy.body.velocity.x >= 0) {
         enemy.anims.play('gots-right');
       } else {
@@ -303,6 +273,35 @@ function update() {
     });
   }
 }
+
+var config = {
+  type: _phaser2.default.AUTO,
+  parent: 'phaser-example',
+  width: 1024,
+  height: 768,
+  scale: {
+    mode: _phaser2.default.Scale.FIT,
+    autoCenter: _phaser2.default.Scale.CENTER_BOTH
+  },
+  pixelArt: true,
+  backgroundColor: '#9bd4e8',
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: {
+        y: 1200
+      },
+      debug: false
+    }
+  },
+  scene: {
+    preload: preload,
+    create: create,
+    update: update
+  }
+};
+// eslint-disable-next-line no-unused-vars
+var game = new _phaser2.default.Game(config);
 
 /***/ }),
 /* 3 */
@@ -318,17 +317,9 @@ exports.levels = undefined;
 
 var _levelHelper = __webpack_require__(4);
 
-var _levelHelper2 = _interopRequireDefault(_levelHelper);
-
 var _statusModule = __webpack_require__(0);
 
-var _statusModule2 = _interopRequireDefault(_statusModule);
-
 var _APIcalls = __webpack_require__(6);
-
-var _APIcalls2 = _interopRequireDefault(_APIcalls);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var levels = exports.levels = function () {
   var levelScene = void 0;
@@ -401,351 +392,273 @@ var levels = exports.levels = function () {
     });
   };
 
-  var setupGameObjects = function setupGameObjects(scene) {
-    if (_statusModule2.default.level === -3) {
-      _statusModule2.default.music.stop();
-      var body = document.getElementsByTagName("body")[0];
-      _statusModule2.default.playerNameInput = document.createElement("input");
-      _statusModule2.default.inputButton = document.createElement("button");
-      _statusModule2.default.inputButton.addEventListener("click", function () {
-        if (_statusModule2.default.playerNameInput.value == "") {
-          _APIcalls2.default.saveScore("Anonymous", _statusModule2.default.score);
-        } else {
-          _APIcalls2.default.saveScore(_statusModule2.default.playerNameInput.value, _statusModule2.default.score);
-        }
-        _statusModule2.default.score = 0;
-        _statusModule2.default.playerNameInput.parentNode.removeChild(_statusModule2.default.playerNameInput);
-        _statusModule2.default.inputButton.parentNode.removeChild(_statusModule2.default.inputButton);
-        load(-2);
+  var loadScoreScreen = function loadScoreScreen(scene) {
+    _statusModule.gameStatus.music.stop();
+    _statusModule.gameStatus.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
+    _statusModule.gameStatus.highScoreText = [];
+    _statusModule.gameStatus.highScoreText[0] = scene.add.text(360, 24, 'HIGH SCORES', {
+      fontSize: '48px',
+      fill: '#000'
+    });
+    var allScores = void 0;
+    _APIcalls.APIcalls.getHighestScores().then(function (resolution) {
+      allScores = resolution.result;
+      allScores.sort(function (a, b) {
+        return b.score - a.score;
       });
-      _statusModule2.default.inputButton.style.position = "absolute";
-      _statusModule2.default.inputButton.style.height = body.clientHeight * 0.05 + 'px';
-      var buttonPositionY = body.clientHeight / 2 - parseFloat(_statusModule2.default.inputButton.style.height.substring(0, _statusModule2.default.inputButton.style.height.length - 2) / 2);
-      _statusModule2.default.inputButton.style.top = buttonPositionY + 'px';
-      _statusModule2.default.inputButton.style.width = body.clientWidth * 0.15 + 'px';
-      var buttonPositionX = body.clientWidth / 2 - parseFloat(_statusModule2.default.inputButton.style.width.substring(0, _statusModule2.default.inputButton.style.width.length - 2) / 2);
-      _statusModule2.default.inputButton.style.left = buttonPositionX + 'px';
-      _statusModule2.default.inputButton.innerHTML = "Save my Score";
-
-      _statusModule2.default.playerNameInput.style.position = "absolute";
-      _statusModule2.default.playerNameInput.style.height = body.clientHeight * 0.05 + 'px';
-      var inputPositionY = body.clientHeight / 2 - parseFloat(_statusModule2.default.playerNameInput.style.height.substring(0, _statusModule2.default.playerNameInput.style.height.length - 2) / 2);
-      _statusModule2.default.playerNameInput.style.top = inputPositionY - body.clientHeight * 0.07 + 'px';
-      _statusModule2.default.playerNameInput.style.width = body.clientWidth * 0.15 + 'px';
-      var inputPositionX = body.clientWidth / 2 - parseFloat(_statusModule2.default.playerNameInput.style.width.substring(0, _statusModule2.default.playerNameInput.style.width.length - 2) / 2);
-      _statusModule2.default.playerNameInput.style.left = inputPositionX + 'px';
-      _statusModule2.default.playerNameInput.placeholder = "Enter your name";
-
-      body.append(_statusModule2.default.playerNameInput);
-      body.append(_statusModule2.default.inputButton);
-    } else if (_statusModule2.default.level === -2) {
-      _statusModule2.default.music.stop();
-      _statusModule2.default.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
-      _statusModule2.default.highScoreText = [];
-      _statusModule2.default.highScoreText[0] = scene.add.text(360, 24, "HIGH SCORES", {
-        fontSize: '48px',
-        fill: '#000'
-      });
-      var allScores = void 0;
-      _APIcalls2.default.getHighestScores().then(function (resolution) {
-        allScores = resolution.result;
-        allScores.sort(function (a, b) {
-          return b.score - a.score;
-        });
-        console.log(allScores);
-        for (var i = 1; i < 7; i += 1) {
-          _statusModule2.default.highScoreText[i] = scene.add.text(48, i * 90 + 48, i + ' - ' + allScores[i - 1].user + ' [Score: ' + allScores[i - 1].score + ']', {
-            fontSize: '48px',
-            fill: '#000'
-          });
-        }
-        _statusModule2.default.highScoreText[7] = scene.add.text(48, 678, 'Press <ENTER> to return to the title screen', {
-          fontSize: '36px',
+      for (var i = 1; i < 7; i += 1) {
+        _statusModule.gameStatus.highScoreText[i] = scene.add.text(48, i * 90 + 48, i + ' - ' + allScores[i - 1].user + ' [Score: ' + allScores[i - 1].score + ']', {
+          fontSize: '48px',
           fill: '#000'
         });
-      });
-    } else if (_statusModule2.default.level === -1) {
-      _statusModule2.default.music.stop();
-      _statusModule2.default.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
-      _statusModule2.default.titleScreen = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'title');
-    } else {
-      if (!_statusModule2.default.music.isPlaying) {
-        _statusModule2.default.music.play();
       }
-      _statusModule2.default.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
-      _statusModule2.default.livesText = scene.add.text(24, 24, 'Lives: ' + _statusModule2.default.lives, {
-        fontSize: '32px',
+      _statusModule.gameStatus.highScoreText[7] = scene.add.text(48, 678, 'Press <ENTER> to return to the title screen', {
+        fontSize: '36px',
         fill: '#000'
       });
-      _statusModule2.default.player = scene.physics.add.sprite(0, 0, 'monty');
-      _statusModule2.default.player.setCollideWorldBounds(true);
-      _statusModule2.default.player.setScale(3);
-      _statusModule2.default.playerDashShadow = scene.add.group();
-      _statusModule2.default.platforms = scene.physics.add.staticGroup();
-      _statusModule2.default.spines = scene.physics.add.staticGroup();
-      _statusModule2.default.goal = scene.physics.add.sprite(0, 0, 'goal').setScale(2);
-      _statusModule2.default.enemies = scene.physics.add.group({
-        allowGravity: false
-      });
-      _statusModule2.default.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
-      _statusModule2.default.curtain.setScale(64, 48);
-      _statusModule2.default.curtain.setDepth(100);
-      scene.physics.add.collider(_statusModule2.default.goal, _statusModule2.default.spines);
-      scene.physics.add.collider(_statusModule2.default.enemies, _statusModule2.default.platforms);
-      scene.physics.add.overlap(_statusModule2.default.player, _statusModule2.default.enemies, playerDie, null, scene);
-      scene.physics.add.collider(_statusModule2.default.player, _statusModule2.default.platforms);
-      scene.physics.add.collider(_statusModule2.default.goal, _statusModule2.default.platforms);
-      scene.physics.add.overlap(_statusModule2.default.player, _statusModule2.default.goal, winLevel, null, scene);
-      scene.physics.add.overlap(_statusModule2.default.player, _statusModule2.default.spines, playerDie, null, scene);
-      loadAnimations(scene);
-    }
+    });
   };
 
   var clearGameObjects = function clearGameObjects() {
-    _statusModule2.default.goal.disableBody(true, true);
-    _statusModule2.default.livesText.destroy();
-    _statusModule2.default.facing = 'right';
-    _statusModule2.default.isDashing = false;
-    _statusModule2.default.goal.disableBody(true, true);
-    _statusModule2.default.player.disableBody(true, true);
-    _statusModule2.default.enemies.children.iterate(function (enemy) {
+    _statusModule.gameStatus.goal.disableBody(true, true);
+    _statusModule.gameStatus.livesText.destroy();
+    _statusModule.gameStatus.facing = 'right';
+    _statusModule.gameStatus.isDashing = false;
+    _statusModule.gameStatus.goal.disableBody(true, true);
+    _statusModule.gameStatus.player.disableBody(true, true);
+    _statusModule.gameStatus.enemies.children.iterate(function (enemy) {
       enemy.disableBody(true, true);
     });
-    _statusModule2.default.platforms.children.iterate(function (platform) {
+    _statusModule.gameStatus.platforms.children.iterate(function (platform) {
       platform.disableBody(true, true);
     });
-    _statusModule2.default.spines.children.iterate(function (spine) {
+    _statusModule.gameStatus.spines.children.iterate(function (spine) {
       spine.disableBody(true, true);
     });
-    _statusModule2.default.curtain.destroy();
-    while (_statusModule2.default.playerDashShadow.getFirstAlive() != null) {
-      _statusModule2.default.playerDashShadow.killAndHide(_statusModule2.default.playerDashShadow.getFirstAlive());
+    _statusModule.gameStatus.curtain.destroy();
+    while (_statusModule.gameStatus.playerDashShadow.getFirstAlive() != null) {
+      _statusModule.gameStatus.playerDashShadow.killAndHide(_statusModule.gameStatus.playerDashShadow.getFirstAlive());
     }
-    _statusModule2.default.finishLevel = false;
-  };
-
-  var winLevel = function winLevel() {
-    if (_statusModule2.default.level < 5) {
-      _statusModule2.default.level += 1;
-    } else {
-      _statusModule2.default.level = 1;
-      _statusModule2.default.cycles += 1;
-    }
-    clearGameObjects();
-    load(_statusModule2.default.level);
-  };
-
-  var playerDie = function playerDie() {
-    if (_statusModule2.default.lives > 0) {
-      _statusModule2.default.lives -= 1;
-    } else {
-      _statusModule2.default.score = _statusModule2.default.level + _statusModule2.default.cycles * 5;
-      _statusModule2.default.level = -3;
-      _statusModule2.default.lives = 4;
-      _statusModule2.default.cycles = 0;
-    }
-    _statusModule2.default.livesText.setText('Lives: ' + _statusModule2.default.lives);
-    clearGameObjects();
-    load(_statusModule2.default.level);
+    _statusModule.gameStatus.finishLevel = false;
   };
 
   var uncoverScene = function uncoverScene() {
-    if (_statusModule2.default.curtain.alpha > 0) _statusModule2.default.curtain.alpha -= 0.01 + 0.01 * _statusModule2.default.curtain.alpha;
-    if (_statusModule2.default.curtain.alpha < 0) _statusModule2.default.curtain.alpha = 0;
+    if (_statusModule.gameStatus.curtain.alpha > 0) {
+      _statusModule.gameStatus.curtain.alpha -= 0.01 + 0.01 * _statusModule.gameStatus.curtain.alpha;
+    }
+    if (_statusModule.gameStatus.curtain.alpha < 0) {
+      _statusModule.gameStatus.curtain.alpha = 0;
+    }
   };
 
   var coverScene = function coverScene() {
-    if (_statusModule2.default.curtain.alpha < 1) _statusModule2.default.curtain.alpha += _statusModule2.default.curtain.alpha * 0.01 + 0.01;
-    if (_statusModule2.default.curtain.alpha > 1) _statusModule2.default.curtain.alpha = 1;
+    if (_statusModule.gameStatus.curtain.alpha < 1) {
+      _statusModule.gameStatus.curtain.alpha += _statusModule.gameStatus.curtain.alpha * 0.01 + 0.01;
+    }
+    if (_statusModule.gameStatus.curtain.alpha > 1) {
+      _statusModule.gameStatus.curtain.alpha = 1;
+    }
   };
-
-  var highScoresScreen = function highScoresScreen() {};
-
-  var startScreen = function startScreen() {};
 
   var tutorial = function tutorial() {
     var enemyAmount = 0;
-    if (_statusModule2.default.cycles <= 7) {
-      enemyAmount = _statusModule2.default.cycles;
+    if (_statusModule.gameStatus.cycles <= 7) {
+      enemyAmount = _statusModule.gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
     for (var i = 1; i <= enemyAmount; i += 1) {
-      var enemy = _levelHelper2.default.createEnemy(2 * i + 3, 21, 'gots');
+      var enemy = _levelHelper.levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
-        enemy.velocity.x = enemy.velocity.x * (_statusModule2.default.cycles / 4);
-        enemy.velocity.y = enemy.velocity.y * (_statusModule2.default.cycles / 4);
+        enemy.velocity.x *= _statusModule.gameStatus.cycles / 4;
+        enemy.velocity.y *= _statusModule.gameStatus.cycles / 4;
       }
     }
-    _levelHelper2.default.drawPlatformSquare(0, 0, 31, 0, 'top-tile');
-    _levelHelper2.default.placePlayer(1, 2);
-    _levelHelper2.default.placeGoal(30, 3);
+    _levelHelper.levelHelper.drawPlatformSquare(0, 0, 31, 0, 'top-tile');
+    _levelHelper.levelHelper.placePlayer(1, 2);
+    _levelHelper.levelHelper.placeGoal(30, 3);
   };
 
-  var level1 = function level1(scene) {
+  var level1 = function level1() {
     var enemyAmount = 0;
-    if (_statusModule2.default.cycles <= 7) {
-      enemyAmount = _statusModule2.default.cycles;
+    if (_statusModule.gameStatus.cycles <= 7) {
+      enemyAmount = _statusModule.gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
     for (var i = 1; i <= enemyAmount; i += 1) {
-      var enemy = _levelHelper2.default.createEnemy(2 * i + 3, 21, 'gots');
+      var enemy = _levelHelper.levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
-        enemy.velocity.x = enemy.velocity.x * (_statusModule2.default.cycles / 4);
-        enemy.velocity.y = enemy.velocity.y * (_statusModule2.default.cycles / 4);
+        enemy.velocity.x *= _statusModule.gameStatus.cycles / 4;
+        enemy.velocity.y *= _statusModule.gameStatus.cycles / 4;
       }
     }
-    _levelHelper2.default.drawPlatformSquare(0, 0, 32, 0, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(27, 2, 32, 0, 'tile');
-    _levelHelper2.default.drawPlatformSquare(27, 3, 32, 3, 'top-tile');
-    _levelHelper2.default.placePlayer(3, 5);
-    _levelHelper2.default.placeGoal(30, 4);
+    _levelHelper.levelHelper.drawPlatformSquare(0, 0, 32, 0, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(27, 2, 32, 0, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(27, 3, 32, 3, 'top-tile');
+    _levelHelper.levelHelper.placePlayer(3, 5);
+    _levelHelper.levelHelper.placeGoal(30, 4);
   };
 
-  var level2 = function level2(scene) {
+  var level2 = function level2() {
     var enemyAmount = 0;
-    if (_statusModule2.default.cycles <= 7) {
-      enemyAmount = _statusModule2.default.cycles;
+    if (_statusModule.gameStatus.cycles <= 7) {
+      enemyAmount = _statusModule.gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
     for (var i = 1; i <= enemyAmount; i += 1) {
-      var enemy = _levelHelper2.default.createEnemy(2 * i + 3, 21, 'gots');
+      var enemy = _levelHelper.levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
-        enemy.velocity.x = enemy.velocity.x * (_statusModule2.default.cycles / 4);
-        enemy.velocity.y = enemy.velocity.y * (_statusModule2.default.cycles / 4);
+        enemy.velocity.x *= _statusModule.gameStatus.cycles / 4;
+        enemy.velocity.y *= _statusModule.gameStatus.cycles / 4;
       }
     }
-    _levelHelper2.default.drawPlatformSquare(0, 0, 12, 0, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(18, 0, 31, 0, 'top-tile');
-    _levelHelper2.default.drawSpineHorizontalLineFacingUp(13, 17, 0);
-    _levelHelper2.default.drawPlatformSquare(18, 0, 25, 0, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(26, 0, 31, 6, 'tile');
-    _levelHelper2.default.drawPlatformSquare(26, 7, 31, 7, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(16, 6, 17, 6, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(20, 2, 22, 2, 'top-tile');
-    _levelHelper2.default.placePlayer(1, 2);
-    _levelHelper2.default.placeGoal(30, 8);
+    _levelHelper.levelHelper.drawPlatformSquare(0, 0, 12, 0, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(18, 0, 31, 0, 'top-tile');
+    _levelHelper.levelHelper.drawSpineHorizontalLineFacingUp(13, 17, 0);
+    _levelHelper.levelHelper.drawPlatformSquare(18, 0, 25, 0, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(26, 0, 31, 6, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(26, 7, 31, 7, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(16, 6, 17, 6, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(20, 2, 22, 2, 'top-tile');
+    _levelHelper.levelHelper.placePlayer(1, 2);
+    _levelHelper.levelHelper.placeGoal(30, 8);
   };
 
-  var level3 = function level3(scene) {
+  var level3 = function level3() {
     var enemyAmount = 0;
-    if (_statusModule2.default.cycles <= 7) {
-      enemyAmount = _statusModule2.default.cycles;
+    if (_statusModule.gameStatus.cycles <= 7) {
+      enemyAmount = _statusModule.gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
     for (var i = 1; i <= enemyAmount; i += 1) {
-      var enemy = _levelHelper2.default.createEnemy(2 * i + 3, 21, 'gots');
+      var enemy = _levelHelper.levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
-        enemy.velocity.x = enemy.velocity.x * (_statusModule2.default.cycles / 4);
-        enemy.velocity.y = enemy.velocity.y * (_statusModule2.default.cycles / 4);
+        enemy.velocity.x *= _statusModule.gameStatus.cycles / 4;
+        enemy.velocity.y *= _statusModule.gameStatus.cycles / 4;
       }
     }
 
-    _levelHelper2.default.drawPlatformSquare(0, 0, 25, 0, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(15, 16, 28, 16, 'top-tile');
-    _levelHelper2.default.drawSpineHorizontalLineFacingDown(15, 28, 15);
-    _levelHelper2.default.drawPlatformSquare(11, 8, 14, 8, 'tile');
-    _levelHelper2.default.drawPlatformSquare(13, 9, 14, 9, 'top-tile');
-    _levelHelper2.default.drawSpineHorizontalLineFacingUp(11, 12, 9);
-    _levelHelper2.default.drawPlatformSquare(10, 9, 10, 9, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(10, 8, 10, 8, 'tile');
-    _levelHelper2.default.drawPlatformSquare(5, 10, 7, 12, 'tile');
-    _levelHelper2.default.drawPlatformSquare(5, 13, 7, 13, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(18, 0, 25, 0, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(26, 7, 26, 15, 'tile');
-    _levelHelper2.default.drawPlatformSquare(26, 0, 31, 6, 'tile');
-    _levelHelper2.default.drawPlatformSquare(27, 7, 31, 7, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(16, 5, 17, 5, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(20, 2, 22, 2, 'top-tile');
-    _levelHelper2.default.placePlayer(1, 2);
-    _levelHelper2.default.placeGoal(30, 8);
+    _levelHelper.levelHelper.drawPlatformSquare(0, 0, 25, 0, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(15, 16, 28, 16, 'top-tile');
+    _levelHelper.levelHelper.drawSpineHorizontalLineFacingDown(15, 28, 15);
+    _levelHelper.levelHelper.drawPlatformSquare(11, 8, 14, 8, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(13, 9, 14, 9, 'top-tile');
+    _levelHelper.levelHelper.drawSpineHorizontalLineFacingUp(11, 12, 9);
+    _levelHelper.levelHelper.drawPlatformSquare(10, 9, 10, 9, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(10, 8, 10, 8, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(5, 10, 7, 12, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(5, 13, 7, 13, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(18, 0, 25, 0, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(26, 7, 26, 15, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(26, 0, 31, 6, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(27, 7, 31, 7, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(16, 5, 17, 5, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(20, 2, 22, 2, 'top-tile');
+    _levelHelper.levelHelper.placePlayer(1, 2);
+    _levelHelper.levelHelper.placeGoal(30, 8);
   };
 
-  var level4 = function level4(scene) {
+  var level4 = function level4() {
     var enemyAmount = 0;
-    if (_statusModule2.default.cycles <= 7) {
-      enemyAmount = _statusModule2.default.cycles;
+    if (_statusModule.gameStatus.cycles <= 7) {
+      enemyAmount = _statusModule.gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
     for (var i = 1; i <= enemyAmount; i += 1) {
-      var enemy = _levelHelper2.default.createEnemy(2 * i + 3, 21, 'gots');
+      var enemy = _levelHelper.levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
-        enemy.velocity.x = enemy.velocity.x * (_statusModule2.default.cycles / 4);
-        enemy.velocity.y = enemy.velocity.y * (_statusModule2.default.cycles / 4);
+        enemy.velocity.x *= _statusModule.gameStatus.cycles / 4;
+        enemy.velocity.y *= _statusModule.gameStatus.cycles / 4;
       }
     }
-    _levelHelper2.default.drawPlatformSquare(0, 0, 31, 0, 'top-tile');
-    _levelHelper2.default.drawSpineVerticalLineFacingRight(1, 23, 0);
-    _levelHelper2.default.drawSpineVerticalLineFacingLeft(1, 18, 6);
-    _levelHelper2.default.drawPlatformSquare(7, 0, 12, 18, 'tile');
-    _levelHelper2.default.drawPlatformSquare(5, 19, 12, 19, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(5, 4, 6, 4, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(0, 8, 1, 8, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(5, 12, 6, 12, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(0, 16, 1, 16, 'top-tile');
-    _levelHelper2.default.drawSpineHorizontalLineFacingUp(13, 18, 1);
-    _levelHelper2.default.drawPlatformSquare(19, 12, 27, 18, 'tile');
-    _levelHelper2.default.drawPlatformSquare(19, 9, 20, 11, 'tile');
-    _levelHelper2.default.drawPlatformSquare(19, 0, 27, 8, 'tile');
-    _levelHelper2.default.drawPlatformSquare(19, 19, 27, 19, 'top-tile');
-    _levelHelper2.default.drawSpineHorizontalLineFacingUp(28, 31, 1);
-    _levelHelper2.default.placePlayer(1, 2);
-    _levelHelper2.default.placeGoal(21, 10);
+    _levelHelper.levelHelper.drawPlatformSquare(0, 0, 31, 0, 'top-tile');
+    _levelHelper.levelHelper.drawSpineVerticalLineFacingRight(1, 23, 0);
+    _levelHelper.levelHelper.drawSpineVerticalLineFacingLeft(1, 18, 6);
+    _levelHelper.levelHelper.drawPlatformSquare(7, 0, 12, 18, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(5, 19, 12, 19, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(5, 4, 6, 4, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(0, 8, 1, 8, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(5, 12, 6, 12, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(0, 16, 1, 16, 'top-tile');
+    _levelHelper.levelHelper.drawSpineHorizontalLineFacingUp(13, 18, 1);
+    _levelHelper.levelHelper.drawPlatformSquare(19, 12, 27, 18, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(19, 9, 20, 11, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(19, 0, 27, 8, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(19, 19, 27, 19, 'top-tile');
+    _levelHelper.levelHelper.drawSpineHorizontalLineFacingUp(28, 31, 1);
+    _levelHelper.levelHelper.placePlayer(1, 2);
+    _levelHelper.levelHelper.placeGoal(21, 10);
   };
 
-  var level5 = function level5(scene) {
+  var level5 = function level5() {
     var enemyAmount = 0;
-    if (_statusModule2.default.cycles <= 7) {
-      enemyAmount = _statusModule2.default.cycles;
+    if (_statusModule.gameStatus.cycles <= 7) {
+      enemyAmount = _statusModule.gameStatus.cycles;
     } else {
       enemyAmount = 8;
     }
     for (var i = 1; i <= enemyAmount; i += 1) {
-      var enemy = _levelHelper2.default.createEnemy(2 * i + 3, 21, 'gots');
+      var enemy = _levelHelper.levelHelper.createEnemy(2 * i + 3, 21, 'gots');
       if (enemyAmount === 8) {
-        enemy.velocity.x = enemy.velocity.x * (_statusModule2.default.cycles / 4);
-        enemy.velocity.y = enemy.velocity.y * (_statusModule2.default.cycles / 4);
+        enemy.velocity.x *= _statusModule.gameStatus.cycles / 4;
+        enemy.velocity.y *= _statusModule.gameStatus.cycles / 4;
       }
     }
-    _levelHelper2.default.drawPlatformSquare(0, 0, 6, 0, 'top-tile');
-    _levelHelper2.default.drawSpineHorizontalLineFacingUp(7, 31, 0);
-    _levelHelper2.default.drawPlatformSquare(10, 8, 10, 15, 'tile');
-    _levelHelper2.default.drawPlatformSquare(10, 16, 10, 16, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(14, 8, 14, 16, 'tile');
-    _levelHelper2.default.drawPlatformSquare(15, 8, 31, 16, 'tile');
-    _levelHelper2.default.drawPlatformSquare(14, 17, 14, 17, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(0, 16, 0, 16, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(0, 0, 0, 15, 'tile');
-    _levelHelper2.default.drawPlatformSquare(1, 4, 1, 4, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(9, 8, 9, 8, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(1, 12, 1, 12, 'top-tile');
-    _levelHelper2.default.drawPlatformSquare(9, 16, 9, 16, 'top-tile');
-    _levelHelper2.default.drawSpineHorizontalLineFacingUp(15, 31, 17);
-    _levelHelper2.default.drawPlatformSquare(15, 16, 31, 16, 'tile');
-    _levelHelper2.default.placePlayer(1, 2);
-    _levelHelper2.default.placeGoal(20, 3);
+    _levelHelper.levelHelper.drawPlatformSquare(0, 0, 6, 0, 'top-tile');
+    _levelHelper.levelHelper.drawSpineHorizontalLineFacingUp(7, 31, 0);
+    _levelHelper.levelHelper.drawPlatformSquare(10, 8, 10, 15, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(10, 16, 10, 16, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(14, 8, 14, 16, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(15, 8, 31, 16, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(14, 17, 14, 17, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(0, 16, 0, 16, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(0, 0, 0, 15, 'tile');
+    _levelHelper.levelHelper.drawPlatformSquare(1, 4, 1, 4, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(9, 8, 9, 8, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(1, 12, 1, 12, 'top-tile');
+    _levelHelper.levelHelper.drawPlatformSquare(9, 16, 9, 16, 'top-tile');
+    _levelHelper.levelHelper.drawSpineHorizontalLineFacingUp(15, 31, 17);
+    _levelHelper.levelHelper.drawPlatformSquare(15, 16, 31, 16, 'tile');
+    _levelHelper.levelHelper.placePlayer(1, 2);
+    _levelHelper.levelHelper.placeGoal(20, 3);
   };
+
+  // const winLevel = () => {
+  //   if (gameStatus.level < 5) {
+  //     gameStatus.level += 1;
+  //   } else {
+  //     gameStatus.level = 1;
+  //     gameStatus.cycles += 1;
+  //   }
+  //   clearGameObjects();
+  //   load(gameStatus.level);
+  // };
+
+  // const playerDie = () => {
+  //   if (gameStatus.lives > 0) {
+  //     gameStatus.lives -= 1;
+  //   } else {
+  //     gameStatus.score = gameStatus.level + gameStatus.cycles * 5;
+  //     gameStatus.level = -3;
+  //     gameStatus.lives = 4;
+  //     gameStatus.cycles = 0;
+  //   }
+  //   gameStatus.livesText.setText(`Lives: ${gameStatus.lives}`);
+  //   clearGameObjects();
+  //   load(gameStatus.level);
+  // };
 
   var load = function load(levelNumber) {
     var scene = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : levelScene;
 
     levelScene = scene;
-    _statusModule2.default.level = levelNumber;
-    setupGameObjects(scene);
+    _statusModule.gameStatus.level = levelNumber;
+    setupGameObjects(scene); //eslint-disable-line
     switch (levelNumber) {
-      case -3:
-        //highScoresScreen(levelNumber, scene);
-        break;
-      case -2:
-        //highScoresScreen(levelNumber, scene);
-        break;
-      case -1:
-        startScreen();
-        break;
       case 0:
         tutorial();
         break;
@@ -765,9 +678,118 @@ var levels = exports.levels = function () {
         level5();
         break;
       default:
-        _statusModule2.default.level = -1;
-        startScreen();
-      //break;
+        _statusModule.gameStatus.level = -1;
+        break;
+    }
+  };
+
+  var setupGameObjects = function setupGameObjects(scene) {
+    if (_statusModule.gameStatus.level === -3) {
+      _statusModule.gameStatus.music.stop();
+      var body = document.getElementsByTagName('body')[0];
+      _statusModule.gameStatus.playerNameInput = document.createElement('input');
+      _statusModule.gameStatus.inputButton = document.createElement('button');
+      _statusModule.gameStatus.inputButton.addEventListener('click', function () {
+        if (_statusModule.gameStatus.playerNameInput.value === '') {
+          _APIcalls.APIcalls.saveScore('Anonymous', _statusModule.gameStatus.score);
+        } else {
+          _APIcalls.APIcalls.saveScore(_statusModule.gameStatus.playerNameInput.value, _statusModule.gameStatus.score);
+        }
+        _statusModule.gameStatus.score = 0;
+        _statusModule.gameStatus.playerNameInput.parentNode.removeChild(_statusModule.gameStatus.playerNameInput);
+        _statusModule.gameStatus.inputButton.parentNode.removeChild(_statusModule.gameStatus.inputButton);
+        _statusModule.gameStatus.level = -2;
+        loadScoreScreen(scene);
+      });
+      _statusModule.gameStatus.inputButton.style.position = 'absolute';
+      _statusModule.gameStatus.inputButton.style.height = body.clientHeight * 0.05 + 'px';
+      var buttonPositionY = body.clientHeight / 2 - parseFloat(_statusModule.gameStatus.inputButton.style.height.substring(0, _statusModule.gameStatus.inputButton.style.height.length - 2) / 2);
+      _statusModule.gameStatus.inputButton.style.top = buttonPositionY + 'px';
+      _statusModule.gameStatus.inputButton.style.width = body.clientWidth * 0.15 + 'px';
+      var buttonPositionX = body.clientWidth / 2 - parseFloat(_statusModule.gameStatus.inputButton.style.width.substring(0, _statusModule.gameStatus.inputButton.style.width.length - 2) / 2);
+      _statusModule.gameStatus.inputButton.style.left = buttonPositionX + 'px';
+      _statusModule.gameStatus.inputButton.innerHTML = 'Save my Score';
+
+      _statusModule.gameStatus.playerNameInput.style.position = 'absolute';
+      _statusModule.gameStatus.playerNameInput.style.height = body.clientHeight * 0.05 + 'px';
+      var inputPositionY = body.clientHeight / 2 - parseFloat(_statusModule.gameStatus.playerNameInput.style.height.substring(0, _statusModule.gameStatus.playerNameInput.style.height.length - 2) / 2);
+      _statusModule.gameStatus.playerNameInput.style.top = inputPositionY - body.clientHeight * 0.07 + 'px';
+      _statusModule.gameStatus.playerNameInput.style.width = body.clientWidth * 0.15 + 'px';
+      var inputPositionX = body.clientWidth / 2 - parseFloat(_statusModule.gameStatus.playerNameInput.style.width.substring(0, _statusModule.gameStatus.playerNameInput.style.width.length - 2) / 2);
+      _statusModule.gameStatus.playerNameInput.style.left = inputPositionX + 'px';
+      _statusModule.gameStatus.playerNameInput.placeholder = 'Enter your name';
+
+      body.append(_statusModule.gameStatus.playerNameInput);
+      body.append(_statusModule.gameStatus.inputButton);
+    } else if (_statusModule.gameStatus.level === -2) {
+      loadScoreScreen(scene);
+    } else if (_statusModule.gameStatus.level === -1) {
+      _statusModule.gameStatus.music.stop();
+      _statusModule.gameStatus.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
+      _statusModule.gameStatus.titleScreen = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'title');
+    } else {
+      if (!_statusModule.gameStatus.music.isPlaying) {
+        _statusModule.gameStatus.music.play();
+      }
+      _statusModule.gameStatus.keys = scene.input.keyboard.addKeys('W,S,A,D,SHIFT,SPACE,ENTER');
+      _statusModule.gameStatus.livesText = scene.add.text(24, 24, 'Lives: ' + _statusModule.gameStatus.lives, {
+        fontSize: '32px',
+        fill: '#000'
+      });
+      _statusModule.gameStatus.player = scene.physics.add.sprite(0, 0, 'monty');
+      _statusModule.gameStatus.player.setCollideWorldBounds(true);
+      _statusModule.gameStatus.player.setScale(3);
+      _statusModule.gameStatus.playerDashShadow = scene.add.group();
+      _statusModule.gameStatus.platforms = scene.physics.add.staticGroup();
+      _statusModule.gameStatus.spines = scene.physics.add.staticGroup();
+      _statusModule.gameStatus.goal = scene.physics.add.sprite(0, 0, 'goal').setScale(2);
+      _statusModule.gameStatus.enemies = scene.physics.add.group({
+        allowGravity: false
+      });
+      _statusModule.gameStatus.curtain = scene.add.sprite(scene.cameras.main.centerX, scene.cameras.main.centerY, 'white');
+      _statusModule.gameStatus.curtain.setScale(64, 48);
+      _statusModule.gameStatus.curtain.setDepth(100);
+      scene.physics.add.collider(_statusModule.gameStatus.goal, _statusModule.gameStatus.spines);
+      scene.physics.add.collider(_statusModule.gameStatus.enemies, _statusModule.gameStatus.platforms);
+      scene.physics.add.overlap(_statusModule.gameStatus.player, _statusModule.gameStatus.enemies, function () {
+        if (_statusModule.gameStatus.lives > 0) {
+          _statusModule.gameStatus.lives -= 1;
+        } else {
+          _statusModule.gameStatus.score = _statusModule.gameStatus.level + _statusModule.gameStatus.cycles * 5;
+          _statusModule.gameStatus.level = -3;
+          _statusModule.gameStatus.lives = 4;
+          _statusModule.gameStatus.cycles = 0;
+        }
+        _statusModule.gameStatus.livesText.setText('Lives: ' + _statusModule.gameStatus.lives);
+        clearGameObjects();
+        load(_statusModule.gameStatus.level);
+      }, null, scene);
+      scene.physics.add.collider(_statusModule.gameStatus.player, _statusModule.gameStatus.platforms);
+      scene.physics.add.collider(_statusModule.gameStatus.goal, _statusModule.gameStatus.platforms);
+      scene.physics.add.overlap(_statusModule.gameStatus.player, _statusModule.gameStatus.goal, function () {
+        if (_statusModule.gameStatus.level < 5) {
+          _statusModule.gameStatus.level += 1;
+        } else {
+          _statusModule.gameStatus.level = 1;
+          _statusModule.gameStatus.cycles += 1;
+        }
+        clearGameObjects();
+        load(_statusModule.gameStatus.level);
+      }, null, scene);
+      scene.physics.add.overlap(_statusModule.gameStatus.player, _statusModule.gameStatus.spines, function () {
+        if (_statusModule.gameStatus.lives > 0) {
+          _statusModule.gameStatus.lives -= 1;
+        } else {
+          _statusModule.gameStatus.score = _statusModule.gameStatus.level + _statusModule.gameStatus.cycles * 5;
+          _statusModule.gameStatus.level = -3;
+          _statusModule.gameStatus.lives = 4;
+          _statusModule.gameStatus.cycles = 0;
+        }
+        _statusModule.gameStatus.livesText.setText('Lives: ' + _statusModule.gameStatus.lives);
+        clearGameObjects();
+        load(_statusModule.gameStatus.level);
+      }, null, scene);
+      loadAnimations(scene);
     }
   };
 
@@ -794,52 +816,46 @@ exports.levelHelper = undefined;
 
 var _statusModule = __webpack_require__(0);
 
-var _statusModule2 = _interopRequireDefault(_statusModule);
-
 var _helpers = __webpack_require__(5);
-
-var _helpers2 = _interopRequireDefault(_helpers);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var levelHelper = exports.levelHelper = function () {
   var placePlatformTile = function placePlatformTile(key, posX, posY) {
-    _statusModule2.default.platforms.create(_helpers2.default.matrixPosX(posX), _helpers2.default.matrixPosY(posY), key).setScale(2).refreshBody();
+    _statusModule.gameStatus.platforms.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), key).setScale(2).refreshBody();
   };
 
   var placeSpineTileFacingUp = function placeSpineTileFacingUp(posX, posY) {
-    _statusModule2.default.spines.create(_helpers2.default.matrixPosX(posX), _helpers2.default.matrixPosY(posY), 'spinesup').setScale(2).refreshBody();
+    _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesup').setScale(2).refreshBody();
   };
 
   var placeSpineTileFacingDown = function placeSpineTileFacingDown(posX, posY) {
-    _statusModule2.default.spines.create(_helpers2.default.matrixPosX(posX), _helpers2.default.matrixPosY(posY), 'spinesdown').setScale(2).refreshBody();
+    _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesdown').setScale(2).refreshBody();
   };
 
   var placeSpineTileFacingLeft = function placeSpineTileFacingLeft(posX, posY) {
-    _statusModule2.default.spines.create(_helpers2.default.matrixPosX(posX), _helpers2.default.matrixPosY(posY), 'spinesleft').setScale(2).refreshBody();
+    _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesleft').setScale(2).refreshBody();
   };
 
   var placeSpineTileFacingRight = function placeSpineTileFacingRight(posX, posY) {
-    _statusModule2.default.spines.create(_helpers2.default.matrixPosX(posX), _helpers2.default.matrixPosY(posY), 'spinesright').setScale(2).refreshBody();
+    _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesright').setScale(2).refreshBody();
   };
 
   var placeGoal = function placeGoal(posX, posY) {
-    _statusModule2.default.goal.x = _helpers2.default.matrixPosX(posX);
-    _statusModule2.default.goal.y = _helpers2.default.matrixPosY(posY);
+    _statusModule.gameStatus.goal.x = _helpers.helpers.matrixPosX(posX);
+    _statusModule.gameStatus.goal.y = _helpers.helpers.matrixPosY(posY);
   };
 
   var placePlayer = function placePlayer(posX, posY) {
-    _statusModule2.default.player.x = _helpers2.default.matrixPosX(posX);
-    _statusModule2.default.player.y = _helpers2.default.matrixPosY(posY);
+    _statusModule.gameStatus.player.x = _helpers.helpers.matrixPosX(posX);
+    _statusModule.gameStatus.player.y = _helpers.helpers.matrixPosY(posY);
   };
 
   var createEnemy = function createEnemy(posX, posY, key) {
-    var newEnemy = _statusModule2.default.enemies.create(_helpers2.default.matrixPosX(posX), _helpers2.default.matrixPosY(posY), key);
+    var newEnemy = _statusModule.gameStatus.enemies.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), key);
     newEnemy.setScale(2);
     newEnemy.setBounce(1);
     newEnemy.setCollideWorldBounds(true, 1, 1);
-    newEnemy.setVelocityX(Phaser.Math.Between(-300, 300));
-    newEnemy.setVelocityY(Phaser.Math.Between(-300, 300));
+    newEnemy.setVelocityX(_helpers.helpers.randomBetween(-300, 300));
+    newEnemy.setVelocityY(_helpers.helpers.randomBetween(-300, 300));
     return newEnemy;
   };
 
@@ -926,9 +942,13 @@ var helpers = exports.helpers = function () {
     return 768 - (16 + posY * 32);
   };
 
+  var randomBetween = function randomBetween(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
   return {
     matrixPosX: matrixPosX,
-    matrixPosY: matrixPosY
+    matrixPosY: matrixPosY,
+    randomBetween: randomBetween
   };
 }();
 
@@ -958,8 +978,8 @@ var APIcalls = exports.APIcalls = function () {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              apiCall = "https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/pK1jIuamYmYoJkVVG3hS/scores/";
-              sendingScore = "{\"user\":\"" + user + "\",\"score\":\"" + score + "\"}";
+              apiCall = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/pK1jIuamYmYoJkVVG3hS/scores/';
+              sendingScore = '{"user":"' + user + '","score":"' + score + '"}';
               apiData = {
                 method: 'POST',
                 headers: {
@@ -970,19 +990,18 @@ var APIcalls = exports.APIcalls = function () {
               savePromise = new Promise(function (resolve, reject) {
                 fetch(apiCall, apiData).then(function (response) {
                   if (response.status === 201) {
-                    console.log(response);
                     resolve(response);
                   } else {
-                    resolve("something went wrong");
+                    resolve('something went wrong');
                   }
                 }).catch(function (error) {
                   reject(error);
                 });
               });
-              return _context.abrupt("return", savePromise);
+              return _context.abrupt('return', savePromise);
 
             case 5:
-            case "end":
+            case 'end':
               return _context.stop();
           }
         }
@@ -995,13 +1014,13 @@ var APIcalls = exports.APIcalls = function () {
   }();
 
   var getHighestScores = function getHighestScores() {
-    var apiCall = "https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/pK1jIuamYmYoJkVVG3hS/scores/";
+    var apiCall = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/pK1jIuamYmYoJkVVG3hS/scores/';
     var scoresPromise = new Promise(function (resolve, reject) {
       fetch(apiCall).then(function (response) {
         if (response.status === 200) {
           resolve(response.json());
         } else {
-          resolve("something went wrong");
+          resolve('something went wrong');
         }
       }).catch(function (error) {
         reject(error);

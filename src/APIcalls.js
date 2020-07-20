@@ -1,9 +1,9 @@
-import "regenerator-runtime/runtime.js";
+import 'regenerator-runtime/runtime';
 
 export const APIcalls = (() => {
   const saveScore = async (user, score) => {
-    let apiCall = "https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/pK1jIuamYmYoJkVVG3hS/scores/";
-    let sendingScore = `{"user":"${user}","score":"${score}"}`;
+    const apiCall = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/pK1jIuamYmYoJkVVG3hS/scores/';
+    const sendingScore = `{"user":"${user}","score":"${score}"}`;
     const apiData = {
       method: 'POST',
       headers: {
@@ -11,44 +11,43 @@ export const APIcalls = (() => {
       },
       body: sendingScore,
     };
-    const savePromise = new Promise ((resolve, reject) => {
+    const savePromise = new Promise((resolve, reject) => {
       fetch(apiCall, apiData)
-      .then(function(response){
-        if(response.status === 201){
-          console.log(response);
-          resolve(response);
-        } else {
-          resolve("something went wrong");
-        }
-      })
-      .catch(function(error){
-        reject(error);
-      });
+        .then((response) => {
+          if (response.status === 201) {
+            resolve(response);
+          } else {
+            resolve('something went wrong');
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
     });
     return savePromise;
-  }
+  };
 
   const getHighestScores = () => {
-    let apiCall = "https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/pK1jIuamYmYoJkVVG3hS/scores/";
-    const scoresPromise = new Promise ((resolve, reject) => {
+    const apiCall = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/pK1jIuamYmYoJkVVG3hS/scores/';
+    const scoresPromise = new Promise((resolve, reject) => {
       fetch(apiCall)
-      .then(function(response) {
-        if(response.status === 200){
-          resolve(response.json());
-        } else{
-          resolve("something went wrong");
-        }          
-      })
-      .catch(function(error){
-        reject(error);
-      });
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.json());
+          } else {
+            resolve('something went wrong');
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
     });
     return scoresPromise;
-  }
+  };
 
   return {
     saveScore,
-    getHighestScores
+    getHighestScores,
   };
 })();
 

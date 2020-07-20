@@ -1,9 +1,11 @@
-import gameStatus from './statusModule';
-import helpers from './helpers';
+import { gameStatus } from './statusModule';
+import { helpers } from './helpers';
 
 export const levelHelper = (() => {
   const placePlatformTile = (key, posX, posY) => {
-    gameStatus.platforms.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), key).setScale(2).refreshBody();
+    gameStatus.platforms.create(helpers.matrixPosX(posX),
+      helpers.matrixPosY(posY), key)
+      .setScale(2).refreshBody();
   };
 
   const placeSpineTileFacingUp = (posX, posY) => {
@@ -33,12 +35,13 @@ export const levelHelper = (() => {
   };
 
   const createEnemy = (posX, posY, key) => {
-    const newEnemy = gameStatus.enemies.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), key);
+    const newEnemy = gameStatus.enemies.create(helpers.matrixPosX(posX),
+      helpers.matrixPosY(posY), key);
     newEnemy.setScale(2);
     newEnemy.setBounce(1);
     newEnemy.setCollideWorldBounds(true, 1, 1);
-    newEnemy.setVelocityX(Phaser.Math.Between(-300, 300));
-    newEnemy.setVelocityY(Phaser.Math.Between(-300, 300));
+    newEnemy.setVelocityX(helpers.randomBetween(-300, 300));
+    newEnemy.setVelocityY(helpers.randomBetween(-300, 300));
     return newEnemy;
   };
 

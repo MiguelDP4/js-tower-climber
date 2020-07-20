@@ -46,7 +46,7 @@ export const gameStatus = (() => {
     inputButton,
     keys,
     score,
-    music
+    music,
   };
 })();
 

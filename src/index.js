@@ -1,35 +1,7 @@
 import Phaser from 'phaser';
-import levels from './levels';
-import gameStatus from './statusModule';
+import { levels } from './levels';
+import { gameStatus } from './statusModule';
 
-const config = {
-  type: Phaser.AUTO,
-  parent: 'phaser-example',
-  width: 1024,
-  height: 768,
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH
-},
-  pixelArt: true,
-  backgroundColor: '#9bd4e8',
-  physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: {
-        y: 1200,
-      },
-      debug: false,
-    },
-  },
-  scene: {
-    preload,
-    create,
-    update,
-  },
-};
-
-const game = new Phaser.Game(config);
 let maxVelX;
 let accelerationX;
 let jumpVel;
@@ -67,26 +39,25 @@ function preload() {
 }
 
 function create() {
-    gameStatus.music = this.sound.add('music');
-    levels.load(-1, this);
-    
+  gameStatus.music = this.sound.add('music');
+  levels.load(-1, this);
 }
 
 function update() {
   if (gameStatus.level === -3) {
     this.input.keyboard.enabled = false;
   } else if (gameStatus.level === -2) {
-      this.input.keyboard.enabled = true;
-      if (gameStatus.keys.ENTER.isDown) {
+    this.input.keyboard.enabled = true;
+    if (gameStatus.keys.ENTER.isDown) {
       gameStatus.level += 1;
-      for(let i = 0; i < 8; i+=1) {
+      for (let i = 0; i < 8; i += 1) {
         gameStatus.highScoreText[i].destroy();
       }
       levels.load(gameStatus.level);
     }
   } else if (gameStatus.level === -1) {
-      this.input.keyboard.enabled = true;
-      if (gameStatus.keys.SPACE.isDown) {
+    this.input.keyboard.enabled = true;
+    if (gameStatus.keys.SPACE.isDown) {
       gameStatus.level += 1;
       gameStatus.titleScreen.destroy();
       levels.load(gameStatus.level);
@@ -96,8 +67,8 @@ function update() {
       levels.load(gameStatus.level);
     }
   } else {
-      this.input.keyboard.enabled = true;
-      if (shadowKillTimer > 0) {
+    this.input.keyboard.enabled = true;
+    if (shadowKillTimer > 0) {
       shadowKillTimer -= 1;
     } else {
       shadowKillTimer = 6;
@@ -139,7 +110,9 @@ function update() {
         if (gameStatus.player.body.velocity.x < Math.abs(maxVelX)) {
           gameStatus.player.setVelocityX(gameStatus.player.body.velocity.x - accelerationX);
         }
-        if (gameStatus.player.body.velocity.x < -1 * maxVelX) gameStatus.player.setVelocityX(-1 * maxVelX);
+        if (gameStatus.player.body.velocity.x < -1 * maxVelX) {
+          gameStatus.player.setVelocityX(-1 * maxVelX);
+        }
       }
       gameStatus.player.anims.play('left', true);
     } else if (gameStatus.keys.D.isDown) {
@@ -163,7 +136,7 @@ function update() {
       gameStatus.player.anims.play('right', true);
     } else {
       if (gameStatus.keys.SHIFT.isDown && dashDistance > 0) {
-        if (gameStatus.facing == 'right') {
+        if (gameStatus.facing === 'right') {
           if (dashDistance % 3 === 0) {
             gameStatus.playerDashShadow.create(gameStatus.player.x, gameStatus.player.y, 'montyjumpright').setScale(4, 2.7);
           }
@@ -207,8 +180,10 @@ function update() {
       gameStatus.player.setVelocityY(-1 * jumpVel);
     }
 
-    if (gameStatus.keys.SPACE.isUp && !gameStatus.player.body.touching.down && gameStatus.player.body.velocity.y < (-1 * jumpVel / 2)) {
-      gameStatus.player.setVelocityY(-1 * jumpVel / 2);
+    if (gameStatus.keys.SPACE.isUp
+      && !gameStatus.player.body.touching.down
+      && gameStatus.player.body.velocity.y < (-1 * (jumpVel / 2))) {
+      gameStatus.player.setVelocityY(-1 * (jumpVel / 2));
     }
 
     if (!gameStatus.player.body.touching.down) {
@@ -224,3 +199,32 @@ function update() {
     });
   }
 }
+
+const config = {
+  type: Phaser.AUTO,
+  parent: 'phaser-example',
+  width: 1024,
+  height: 768,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
+  pixelArt: true,
+  backgroundColor: '#9bd4e8',
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: {
+        y: 1200,
+      },
+      debug: false,
+    },
+  },
+  scene: {
+    preload,
+    create,
+    update,
+  },
+};
+// eslint-disable-next-line no-unused-vars
+const game = new Phaser.Game(config);

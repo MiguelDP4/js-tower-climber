@@ -1,4 +1,4 @@
-import { convertToBool } from '../helpers.js';
+import { convertToBool } from '../helpers';
 
 test('returns true if yes', () => {
   expect(convertToBool('yes')).toBe(true);
