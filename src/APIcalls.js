@@ -14,10 +14,12 @@ export const APIcalls = (() => {
     const savePromise = new Promise ((resolve, reject) => {
       fetch(apiCall, apiData)
       .then(function(response){
-        if(response.status === 201)
+        if(response.status === 201){
+          console.log(response);
           resolve(response);
-          else
+        } else {
           resolve("something went wrong");
+        }
       })
       .catch(function(error){
         reject(error);

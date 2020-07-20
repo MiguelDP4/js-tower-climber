@@ -20,6 +20,8 @@ export const gameStatus = (() => {
   let spines;
   const finishLevel = false;
   let keys;
+  let score;
+  let music;
 
   return {
     titleScreen,
@@ -42,7 +44,9 @@ export const gameStatus = (() => {
     finishLevel,
     playerNameInput,
     inputButton,
-    keys
+    keys,
+    score,
+    music
   };
 })();
 
