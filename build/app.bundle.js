@@ -824,29 +824,31 @@ var levelHelper = exports.levelHelper = function () {
   };
 
   var placeSpineTileFacingUp = function placeSpineTileFacingUp(posX, posY) {
-    _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesup').setScale(2).refreshBody();
+    return _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesup').setScale(2).refreshBody();
   };
 
   var placeSpineTileFacingDown = function placeSpineTileFacingDown(posX, posY) {
-    _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesdown').setScale(2).refreshBody();
+    return _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesdown').setScale(2).refreshBody();
   };
 
   var placeSpineTileFacingLeft = function placeSpineTileFacingLeft(posX, posY) {
-    _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesleft').setScale(2).refreshBody();
+    return _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesleft').setScale(2).refreshBody();
   };
 
   var placeSpineTileFacingRight = function placeSpineTileFacingRight(posX, posY) {
-    _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesright').setScale(2).refreshBody();
+    return _statusModule.gameStatus.spines.create(_helpers.helpers.matrixPosX(posX), _helpers.helpers.matrixPosY(posY), 'spinesright').setScale(2).refreshBody();
   };
 
   var placeGoal = function placeGoal(posX, posY) {
     _statusModule.gameStatus.goal.x = _helpers.helpers.matrixPosX(posX);
     _statusModule.gameStatus.goal.y = _helpers.helpers.matrixPosY(posY);
+    return _statusModule.gameStatus.goal;
   };
 
   var placePlayer = function placePlayer(posX, posY) {
     _statusModule.gameStatus.player.x = _helpers.helpers.matrixPosX(posX);
     _statusModule.gameStatus.player.y = _helpers.helpers.matrixPosY(posY);
+    return _statusModule.gameStatus.player;
   };
 
   var createEnemy = function createEnemy(posX, posY, key) {
