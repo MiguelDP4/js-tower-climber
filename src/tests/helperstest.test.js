@@ -42,15 +42,24 @@ test('Gets the adequate tile position for them to be on a grid', () => {
 
 test('generates a random number between a min and a max', () => {
   expect(helpers.randomBetween(0, 10)).toBeGreaterThanOrEqual(0);
+});
+
+test('generates a random number between a min and a max', () => {
   expect(helpers.randomBetween(0, 10)).toBeLessThanOrEqual(10);
 });
 
 test('generates a random number between a min and a max', () => {
-  expect(helpers.randomBetween(-100, 100)).toBeGreaterThanOrEqual(-100);
   expect(helpers.randomBetween(-100, 100)).toBeLessThanOrEqual(100);
 });
 
 test('generates a random number between a min and a max', () => {
+  expect(helpers.randomBetween(-100, 100)).toBeGreaterThanOrEqual(-100);
+});
+
+test('generates a random number between a min and a max', () => {
   expect(helpers.randomBetween(-1000, 1000)).toBeGreaterThanOrEqual(-1000);
+});
+
+test('generates a random number between a min and a max', () => {
   expect(helpers.randomBetween(-1000, 1000)).toBeLessThanOrEqual(1000);
 });
