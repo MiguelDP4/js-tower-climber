@@ -15,7 +15,6 @@ export const APIcalls = (() => {
       fetch(apiCall, apiData)
       .then(function(response){
         if(response.status === 201){
-          console.log(response);
           resolve(response);
         } else {
           resolve("something went wrong");

@@ -128,7 +128,6 @@ export const levels = (() => {
       APIcalls.getHighestScores().then(function(resolution) {
         allScores = resolution.result;
         allScores.sort((a,b) => b.score - a.score);
-        console.log(allScores);
         for(let i = 1; i < 7; i+=1) {
           gameStatus.highScoreText[i] = scene.add.text(48, i * 90 + 48, `${i} - ${allScores[i - 1].user} [Score: ${allScores[i - 1].score}]`, {
             fontSize: '48px',
