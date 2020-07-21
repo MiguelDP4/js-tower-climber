@@ -8,30 +8,24 @@ export const levelHelper = (() => {
       .setScale(2).refreshBody();
   };
 
-  const placeSpineTileFacingUp = (posX, posY) => {
-    gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesup').setScale(2).refreshBody();
-  };
+  const placeSpineTileFacingUp = (posX, posY) => gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesup').setScale(2).refreshBody();
 
-  const placeSpineTileFacingDown = (posX, posY) => {
-    gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesdown').setScale(2).refreshBody();
-  };
+  const placeSpineTileFacingDown = (posX, posY) => gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesdown').setScale(2).refreshBody();
 
-  const placeSpineTileFacingLeft = (posX, posY) => {
-    gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesleft').setScale(2).refreshBody();
-  };
+  const placeSpineTileFacingLeft = (posX, posY) => gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesleft').setScale(2).refreshBody();
 
-  const placeSpineTileFacingRight = (posX, posY) => {
-    gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesright').setScale(2).refreshBody();
-  };
+  const placeSpineTileFacingRight = (posX, posY) => gameStatus.spines.create(helpers.matrixPosX(posX), helpers.matrixPosY(posY), 'spinesright').setScale(2).refreshBody();
 
   const placeGoal = (posX, posY) => {
     gameStatus.goal.x = helpers.matrixPosX(posX);
     gameStatus.goal.y = helpers.matrixPosY(posY);
+    return gameStatus.goal;
   };
 
   const placePlayer = (posX, posY) => {
     gameStatus.player.x = helpers.matrixPosX(posX);
     gameStatus.player.y = helpers.matrixPosY(posY);
+    return gameStatus.player;
   };
 
   const createEnemy = (posX, posY, key) => {
@@ -100,6 +94,10 @@ export const levelHelper = (() => {
     drawSpineVerticalLineFacingLeft,
     drawSpineVerticalLineFacingRight,
     createEnemy,
+    placeSpineTileFacingDown,
+    placeSpineTileFacingUp,
+    placeSpineTileFacingLeft,
+    placeSpineTileFacingRight,
   };
 })();
 

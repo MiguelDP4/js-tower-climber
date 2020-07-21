@@ -312,31 +312,6 @@ export const levels = (() => {
     levelHelper.placeGoal(20, 3);
   };
 
-  // const winLevel = () => {
-  //   if (gameStatus.level < 5) {
-  //     gameStatus.level += 1;
-  //   } else {
-  //     gameStatus.level = 1;
-  //     gameStatus.cycles += 1;
-  //   }
-  //   clearGameObjects();
-  //   load(gameStatus.level);
-  // };
-
-  // const playerDie = () => {
-  //   if (gameStatus.lives > 0) {
-  //     gameStatus.lives -= 1;
-  //   } else {
-  //     gameStatus.score = gameStatus.level + gameStatus.cycles * 5;
-  //     gameStatus.level = -3;
-  //     gameStatus.lives = 4;
-  //     gameStatus.cycles = 0;
-  //   }
-  //   gameStatus.livesText.setText(`Lives: ${gameStatus.lives}`);
-  //   clearGameObjects();
-  //   load(gameStatus.level);
-  // };
-
   const load = (levelNumber, scene = levelScene) => {
     levelScene = scene;
     gameStatus.level = levelNumber;
