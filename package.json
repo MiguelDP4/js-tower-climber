@@ -1,0 +1,61 @@
+{
+  "name": "tower-climber",
+  "version": "1.0.0",
+  "description": "A Phaser 3 Platform Game",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/photonstorm/phaser3-project-template.git"
+  },
+  "scripts": {
+    "build": "webpack",
+    "start": "npm run build && webpack-dev-server",
+    "startlocal": "webpack-dev-server",
+    "test": "jest"
+  },
+  "author": "Miguel Dubois",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "babel-core": "6",
+    "babel-jest": "^26.1.0",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.0.0",
+    "copy-webpack-plugin": "^4.5.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "jest": "^26.1.0",
+    "jest-webpack-resolver": "^0.3.0",
+    "raw-loader": "^0.5.1",
+    "stylelint": "13.3.x",
+    "stylelint-config-standard": "20.0.x",
+    "stylelint-csstree-validator": "^1.8.0",
+    "stylelint-scss": "3.17.x",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.0.0"
+  },
+  "dependencies": {
+    "phaser": "^3.0.0",
+    "regenerator-runtime": "^0.13.5"
+  },
+  "jest": {
+    "resolver": "jest-webpack-resolver",
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "bower_components",
+      "shared",
+      "src"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
+    }
+  },
+  "heroku-run-build-script": true
+}
