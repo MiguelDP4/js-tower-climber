@@ -2,7 +2,9 @@
 
 ## The Game
 Mountain Climber is a platforming game inspired by the 80s games of this genre and some modern games such as Celeste.
-The score is determined by the number of levels the player completed. Each level is completed by reaching the goal flag. There are only five levels. Each time the player completes all five levels, the difficulty will increase by adding more enemies and eventually making them faster.
+The score is determined by the number of levels the player completed. Each level is completed by reaching the goal flag.
+
+There are only five levels. Each time the player completes all five levels, the difficulty will increase by adding more enemies and eventually making them faster.
 I added the ability to save the players scores and showcase the 6 highest scores.
 
 ## Design process
